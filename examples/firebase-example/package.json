@@ -1,0 +1,9 @@
+{
+  "name": "firebase-example",
+  "packageManager": "yarn@3.2.2",
+  "private": true,
+  "dependencies": {
+    "firebase-tools": "11.5.0",
+    "shadow-cljs": "2.19.8"
+  }
+}

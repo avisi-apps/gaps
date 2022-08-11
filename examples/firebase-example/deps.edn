@@ -1,0 +1,3 @@
+{:deps {com.avisi-apps.gaps/log {:local/root "../../modules/log"}
+        com.avisi-apps.gaps/rcf {:local/root "../../modules/rcf"}
+        thheller/shadow-cljs {:mvn/version "2.19.0"}}}

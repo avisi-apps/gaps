@@ -1,0 +1,8 @@
+;; shadow-cljs configuration
+{:deps true
+
+ :builds {:functions {:target :node-library
+                      :js-options {:js-package-dirs ["functions/node_modules"]}
+                      :output-to "functions/index.js"
+                      :devtools {:preloads [avisi-apps.gaps.rcf.preload]}
+                      :exports-var avisi-apps.firebase-example.functions/cloud-functions}}}

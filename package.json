@@ -1,0 +1,11 @@
+{
+  "name": "gaps",
+  "packageManager": "yarn@3.2.2",
+  "dependencies": {
+    "shadow-cljs": "2.19.8"
+  },
+  "workspaces": [
+    "modules/*",
+    "examples/*"
+  ]
+}

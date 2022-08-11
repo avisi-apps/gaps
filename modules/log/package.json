@@ -1,0 +1,8 @@
+{
+  "name": "avisi-apps-gaps-log",
+  "version": "1.0.0",
+  "dependencies": {
+    "bunyan": "1.8.15",
+    "shadow-cljs": "2.19.8"
+  }
+}
