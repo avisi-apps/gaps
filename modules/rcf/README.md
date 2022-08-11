@@ -17,7 +17,7 @@ follows:
 ## Extracting tests for CI
 
 When you write a lot of inline test it would be nice if those tests get ran on CI. There is hook for that 
-`avisi-apps.gaps.rcf.shadow-cljs.hook` below is a example build for creating a build to run NodeJS tests:
+`avisi-apps.gaps.rcf.shadow-cljs.hook` below is an example build for creating a build to run NodeJS tests:
 
 
 ```clojure
