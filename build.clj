@@ -3,15 +3,28 @@
             [clojure.core.server :as server]
             [clojure.tools.deps.alpha :as deps]
             [clojure.java.io :as io]
-            [org.corfield.build :as bb])
+            [org.corfield.build :as bb]
+            [clojure.string :as str])
   (:import [java.io File]))
 
+(def scm-url "git@github.com:avisi-apps/gaps.git")
 (def version (format "0.0.%s-SNAPSHOT" (b/git-count-revs nil)))
 (def modules-folder (b/resolve-path "modules"))
 (def modules (->>
                (.listFiles ^File modules-folder)
                (filter #(.isDirectory ^File %))
                (mapv (fn [^File file] (symbol "com.avisi-apps.gaps" (.getName file))))))
+
+(defn sha
+  [{:keys [dir path] :or {dir "."}}]
+  (-> {:command-args (cond-> ["git" "rev-parse" "HEAD"]
+                       path (conj "--" path))
+       :dir (.getPath (b/resolve-path dir))
+       :out :capture}
+    b/process
+    :out
+    str/trim))
+
 
 (defn local-lib->mvn-lib [[k {:deps/keys [manifest] :as v}]]
   (if (= manifest :deps)
@@ -24,14 +37,20 @@
   (format "./modules/%s" (name lib)))
 
 (defn build-module [{:keys [lib] :as opts}]
-  (with-bindings {#'clojure.tools.build.api/*project-root* (module-dir opts)}
-    (let [basis (-> (b/create-basis)
-                  (update :libs #(into {} (map local-lib->mvn-lib) %)))]
-      (-> opts
-        (assoc :version version
-               :basis basis)
-        (bb/jar)
-        (bb/install)))))
+  (let [dir (module-dir opts)
+        module-sha (sha {})]
+    (with-bindings {#'clojure.tools.build.api/*project-root* dir}
+      (let [basis (-> (b/create-basis)
+                    (update :libs #(into {} (map local-lib->mvn-lib) %)))]
+        (-> opts
+          (assoc :version version
+                 :basis basis
+                 :scm {:tag module-sha
+                       :connection (str "scm:git:" scm-url)
+                       :developerConnection (str "scm:git:" scm-url)
+                       :url scm-url})
+          (bb/jar)
+          (bb/install))))))
 
 (defn build [opts]
   (run!
@@ -65,7 +84,8 @@
     (fn [module]
       (->
         opts
-        (assoc :lib module)
+        (assoc
+          :lib module)
         (build-module)
         (release-module))) modules))
 
@@ -82,5 +102,7 @@
   (release-module {:lib 'avisi-apps/rcf})
 
 
-  (build-module {:lib 'avisi-apps/log})
+  (build-module {:lib 'com.avisi-apps.gaps/log})
+
+
   )
