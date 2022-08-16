@@ -19,7 +19,7 @@
                           (->
                             (cp/find-resources-using-ns (:classpath state) 'hyperfiddle.rcf)
                             ;; Dev is a preload for running with firebase so exclude it
-                            (disj 'dev 'preloads.hyperfiddle)))]
+                            (disj 'dev 'avisi-apps.gaps.rcf.preload)))]
     (log/info
       ::hook
       {:test-namespaces test-namespaces

@@ -1,0 +1,57 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: 'cimg/clojure:1.11-node'
+
+orbs:
+  firebase-orb: avisi-apps/firebase-orb@1.1.1
+  node: circleci/node@5.0.2
+
+jobs:
+  build-all-jars:
+    executor: default
+    steps:
+      - checkout
+      - run:
+          name: "Build jars"
+          command: clojure -T:build build
+
+  compile-tests:
+    executor: default
+    steps:
+      - checkout
+      - run:
+          command: rm -rf ~/.gitconfig
+          name: Get rid of erroneous git config
+      - node/install-packages:
+          cache-version: v1
+          include-branch-in-cache-key: false
+          pkg-manager: yarn
+      - firebase-orb/install-clj-deps:
+          aliases: "test:all:cljs"
+      - run:
+          command: yarn shadow-cljs -A:test:all:cljs compile test
+          name: Compile tests
+      - persist_to_workspace:
+          root: .
+          paths:
+            - test/index.js
+            - .shadow-cljs/builds/test
+
+workflows:
+  build-jars:
+    jobs:
+      - build-all-jars
+  run-tests:
+    jobs:
+      - compile-tests
+      - node/test:
+          name: "run tests"
+          setup:
+            - attach_workspace:
+                at: .
+          pkg-manager: yarn
+          requires:
+            - compile-tests

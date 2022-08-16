@@ -1,0 +1,28 @@
+version: 2.1
+
+setup: true
+
+executors:
+  default:
+    docker:
+      - image: 'cimg/clojure:1.11-node'
+
+orbs:
+  continuation: circleci/continuation@0.3.1
+
+jobs:
+  setup:
+    executor: default
+    steps:
+      - checkout
+      - run:
+          name: Generate config
+          command: |
+            clojure -T:build generate-ci-config
+      - continuation/continue:
+          configuration_path: generated-config.yml
+
+workflows:
+  setup:
+    jobs:
+      - setup

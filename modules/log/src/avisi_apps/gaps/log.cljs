@@ -3,6 +3,7 @@
   (:require
     ["bunyan" :as bunyan]
     [cljs-bean.core :refer [->js bean]]
+    [hyperfiddle.rcf :refer [tests]]
     [clojure.string :as str]
     [clojure.set :as set]))
 
@@ -49,12 +50,19 @@
       "ALERT" (.fatal ^js logger* js-payload msg)
       "EMERGENCY" (.fatal ^js logger* js-payload msg))))
 
-(defn request->log [{:keys [request-method url content-length remote-addr protocol]}]
-  #js {"requestMethod" (and request-method (str/upper-case (name request-method))),
-       "requestUrl" url,
-       "requestSize" content-length,
-       "remoteIp" remote-addr,
-       "protocol" protocol})
+(defn request->log [{:keys [request-method url content-length remote-addr protocol] :as args}]
+  (when (seq args)
+    #js {"requestMethod" (and request-method (str/upper-case (name request-method))),
+         "requestUrl" url,
+         "requestSize" content-length,
+         "remoteIp" remote-addr,
+         "protocol" protocol}))
+
+(tests
+  "Don't fail on empty request"
+  (request->log {}) := nil
+  "Don't fail on empty request-method"
+  (js->clj (request->log {:url "/foo/bar"})) := {"requestMethod" nil, "requestUrl" "/foo/bar", "requestSize" nil, "remoteIp" nil, "protocol" nil})
 
 (defn add-error-data [data exception]
   (let [{:keys [stack request response]} (bean exception)]

@@ -22,10 +22,7 @@ When you write a lot of inline test it would be nice if those tests get ran on C
 
 ```clojure
 {:target :node-test
- :js-options {:js-package-dirs ["modules/test/node_modules"]
-              :resolve {"firebase" {:target :npm
-                                    :require "firebase/compat/app"}}}
  :output-to "modules/test/index.js"
  :ns-regexp "-test$"
- :build-hooks [(avisi-apps.gaps.rcf.shadow-cljs.hook)]}
+ :build-hooks [(avisi-apps.gaps.rcf.shadow-cljs.hook/hook)]}
 ```
