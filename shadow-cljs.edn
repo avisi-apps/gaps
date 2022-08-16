@@ -1,0 +1,5 @@
+{:deps {:aliases [:cljs :all :test]}
+ :builds {:test {:target :node-test
+                 :output-to "test/index.js"
+                 :ns-regexp "-test$"
+                 :build-hooks [(avisi-apps.gaps.rcf.shadow-cljs.hook/hook)]}}}}

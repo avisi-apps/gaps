@@ -6,6 +6,10 @@
   },
   "workspaces": [
     "modules/*",
-    "examples/*"
-  ]
+    "examples/*",
+    "test"
+  ],
+  "scripts": {
+    "test": "yarn workspace test test"
+  }
 }

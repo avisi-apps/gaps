@@ -1,19 +1,24 @@
 (ns build
-  (:require [clojure.tools.build.api :as b]
-            [clojure.core.server :as server]
-            [clojure.tools.deps.alpha :as deps]
-            [clojure.java.io :as io]
+  (:require [clojure.core.server :as server]
+            [clojure.string :as str]
+            [clojure.tools.build.api :as b]
             [org.corfield.build :as bb]
-            [clojure.string :as str])
+            [clojure.java.io :as io]
+            [clj-yaml.core :as yaml])
   (:import [java.io File]))
+
+(defn name->module [n]
+  (symbol "com.avisi-apps.gaps" n))
 
 (def scm-url "git@github.com:avisi-apps/gaps.git")
 (def version (format "0.0.%s-SNAPSHOT" (b/git-count-revs nil)))
 (def modules-folder (b/resolve-path "modules"))
+(def current-branch (b/git-process {:git-args "branch --show-current"}))
+(def release-branch "master")
 (def modules (->>
                (.listFiles ^File modules-folder)
                (filter #(.isDirectory ^File %))
-               (mapv (fn [^File file] (symbol "com.avisi-apps.gaps" (.getName file))))))
+               (mapv (fn [^File file] (name->module (.getName file))))))
 
 (defn sha
   [{:keys [dir path] :or {dir "."}}]
@@ -24,7 +29,6 @@
     b/process
     :out
     str/trim))
-
 
 (defn local-lib->mvn-lib [[k {:deps/keys [manifest] :as v}]]
   (if (= manifest :deps)
@@ -96,7 +100,65 @@
   (println "Started repl server on port: " port)
   @(promise))
 
+(defn changed-files-from-release-branch []
+  (when (not= release-branch current-branch)
+    (->
+      (b/git-process {:git-args "diff master --name-only"})
+      (str/split-lines))))
+
+(defn file-path->affected-module [p]
+  (some->
+    (re-find #"^modules\/([^\/]*)\/.*$" p)
+    second))
+
 (comment
+  (file-path->affected-module "modules/log/README.md") := "log"
+  (file-path->affected-module "README.md") := nil)
+
+
+(defn gen-workflow-for-module [])
+
+(defn generate-ci-config [opts]
+  (let [changed-modules (into #{}
+                          (keep file-path->affected-module)
+                          (changed-files-from-release-branch))
+        base-config (->
+                      (io/file ".circleci/continue-config.yml")
+                      (slurp)
+                      (yaml/parse-string))
+        config-with-changed-modules (reduce
+                                      (fn [config module]
+                                        ;; Here we could possibly add extra build test for certain modules
+                                        config)
+                                      base-config
+                                      changed-modules)]
+    (println "Generate generated-config.yml")
+    (spit (io/file "generated-config.yml")
+      (yaml/generate-string config-with-changed-modules :dumper-options {:flow-style :block}))))
+
+(comment
+  (generate-ci-config {})
+
+
+  (def base-config (->
+                     (io/file ".circleci/continue-config.yml")
+                     (slurp)
+                     (yaml/parse-string)))
+
+  (assoc-in base-config [:workflows] )
+
+
+  (let [release-branch  "master"
+        current-branch (b/git-process {:git-args "branch --show-current"})]
+    (when (not= release-branch current-branch)
+      (->
+        (b/git-process {:git-args "diff master --name-only"})
+        (str/split-lines))))
+
+  (into #{}
+    (keep file-path->affected-module)
+    (changed-files-from-release-branch))
+
   (build {})
 
   (release-module {:lib 'avisi-apps/rcf})
