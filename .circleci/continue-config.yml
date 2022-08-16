@@ -18,7 +18,6 @@ jobs:
           name: "Build jars"
           command: clojure -T:build build
 
-
   compile-tests:
     executor: default
     steps:

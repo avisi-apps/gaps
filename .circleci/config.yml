@@ -14,13 +14,13 @@ jobs:
   setup:
     executor: default
     steps:
-      - checkout # checkout code
-      - run: # run a command
+      - checkout
+      - run:
           name: Generate config
           command: |
             clojure -T:build generate-ci-config
       - continuation/continue:
-          configuration_path: generated-config.yml # use newly generated config to continue
+          configuration_path: generated-config.yml
 
 workflows:
   setup:
