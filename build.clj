@@ -11,7 +11,11 @@
   (symbol "com.avisi-apps.gaps" n))
 
 (def scm-url "git@github.com:avisi-apps/gaps.git")
-(def version (format "0.0.%s-SNAPSHOT" (b/git-count-revs nil)))
+(def current-tag (b/git-process {:git-args "describe --tags --exact-match"}))
+(def version
+  (if current-tag
+    (subs current-tag 1)
+    (format "0.0.%s-SNAPSHOT" (b/git-count-revs nil))))
 (def modules-folder (b/resolve-path "modules"))
 (def current-branch (b/git-process {:git-args "branch --show-current"}))
 (def release-branch "master")
@@ -138,6 +142,8 @@
 
 (comment
   (generate-ci-config {})
+
+  version
 
 
   (def base-config (->
