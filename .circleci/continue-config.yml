@@ -12,6 +12,7 @@ orbs:
 jobs:
   deploy-all-jars:
     executor: default
+    resource_class: small
     steps:
       - checkout
       - run:
