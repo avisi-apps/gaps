@@ -10,13 +10,13 @@ orbs:
   node: circleci/node@5.0.2
 
 jobs:
-  build-all-jars:
+  deploy-all-jars:
     executor: default
     steps:
       - checkout
       - run:
-          name: "Build jars"
-          command: clojure -T:build build
+          name: "Release jars"
+          command: clojure -T:build release
 
   compile-tests:
     executor: default
@@ -41,10 +41,7 @@ jobs:
             - .shadow-cljs/builds/test
 
 workflows:
-  build-jars:
-    jobs:
-      - build-all-jars
-  run-tests:
+  run-tests-and-deploy-to-clojars:
     jobs:
       - compile-tests
       - node/test:
@@ -55,3 +52,6 @@ workflows:
           pkg-manager: yarn
           requires:
             - compile-tests
+      - deploy-all-jars:
+          requires:
+            - "run tests"
