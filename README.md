@@ -13,4 +13,7 @@ A logging module to do structured logging with [Bunyan](https://github.com/trent
 ## [rcf](modules/rcf/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/rcf.svg)](https://clojars.org/com.avisi-apps.gaps/rcf)
 Helpers for working with [RCF](https://github.com/hyperfiddle/rcf)
 
+## [fulcro-google-remote](modules/rcf/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/fulcro-google-remote.svg)](https://clojars.org/com.avisi-apps.gaps/fulcro-google-remote)
+Helpers for working a remote that is hosted on google with fulcro [fulcro-google-remote](https://github.com/hyperfiddle/fulcro-google-remote)
+
 
