@@ -3,9 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [0.0.23]
+## [0.0.26] - 2022-08-18
 ### Added
 - Added fulcro-google-remote library `com.avisi-apps.gaps/log`
+- Added clj-kondo linting
+- Automated builds and release process
 
 ## [0.0.4] - 2022-08-11
 ### Added
@@ -18,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.4...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.26...HEAD
+[0.0.26]: https://github.com/avisi-apps/gaps/compare/v0.0.26...HEAD
 [0.0.1]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.1
 [0.0.4]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.4
