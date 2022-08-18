@@ -65,4 +65,4 @@ pom.xml.asc
 
 # Modules
 modules/*/target
-test.js
+test/index.js

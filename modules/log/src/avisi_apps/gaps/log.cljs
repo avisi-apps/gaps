@@ -4,8 +4,7 @@
     ["bunyan" :as bunyan]
     [cljs-bean.core :refer [->js bean]]
     [hyperfiddle.rcf :refer [tests]]
-    [clojure.string :as str]
-    [clojure.set :as set]))
+    [clojure.string :as str]))
 
 (declare debug info warn error spy)
 

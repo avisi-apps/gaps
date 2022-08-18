@@ -1,0 +1,15 @@
+on: push
+name: Push / PR Builder
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install clj-kondo
+        uses: DeLaGuardo/setup-clj-kondo@afc83dbbf4e7e32e04649e29dbf30668d30e9e3e
+        with:
+          version: '2022.08.03'
+
+      - uses: actions/checkout@v2
+
+      - name: Lint
+        run: make lint
