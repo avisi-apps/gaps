@@ -26,11 +26,7 @@ workflows:
   setup:
     jobs:
       - setup
-      - setup:
-          name: release
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only:
-                - /.*/
+        filters:
+          tags:
+            only:
+              - /.*/
