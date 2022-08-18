@@ -25,8 +25,8 @@ jobs:
 workflows:
   setup:
     jobs:
-      - setup
-        filters:
-          tags:
-            only:
-              - /.*/
+      - setup:
+          filters:
+            tags:
+              only:
+                - /.*/
