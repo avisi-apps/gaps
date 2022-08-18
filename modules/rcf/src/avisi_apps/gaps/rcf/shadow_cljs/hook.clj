@@ -13,7 +13,7 @@
   [{::build/keys [config]
     :as state}
    &
-   args]
+   _]
   (let [test-namespaces (into
                           (tu/find-test-namespaces state config)
                           (->

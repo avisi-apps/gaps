@@ -25,6 +25,7 @@
     (assoc fulcro-remote
            :transmit!
            (fn retry-transmit! [this send-node]
+             #_{:clj-kondo/ignore [:loop-without-recur]}
              (p/loop [tries-left amount-of-retry-attempts]
                (->
                  (p/create
