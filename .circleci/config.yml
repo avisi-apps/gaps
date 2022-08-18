@@ -29,6 +29,8 @@ workflows:
       - setup:
           name: release
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only:
                 - /.*/

@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [0.0.26] - 2022-08-18
+## [0.0.28] - 2022-08-18
 ### Added
 - Added fulcro-google-remote library `com.avisi-apps.gaps/log`
 - Added clj-kondo linting
