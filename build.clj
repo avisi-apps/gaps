@@ -10,6 +10,8 @@
 (defn name->module [n]
   (symbol "com.avisi-apps.gaps" n))
 
+(def base-version "0.0")
+
 (def scm-url "git@github.com:avisi-apps/gaps.git")
 
 (def current-tag (b/git-process {:git-args "describe --tags --exact-match"}))
@@ -18,7 +20,7 @@
 (def version
   (if current-tag
     (subs current-tag 1)
-    (format "0.0.%s-SNAPSHOT" (b/git-count-revs nil))))
+    (format "%s.%s-SNAPSHOT" base-version (b/git-count-revs nil))))
 (println "Version = " version)
 
 
@@ -108,6 +110,40 @@
           :lib module)
         (build-module)
         (release-module))) modules))
+
+(defn update-changelog! [new-version]
+  (let [changelog (slurp "CHANGELOG.md")
+        updated-changelog (-> changelog
+                            (str/replace "## [Unreleased]"
+                              (str "## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+## [" new-version "]"))
+                            (str/replace #"(?m)^\[Unreleased\]:.*"
+                              (str
+                                (format "[Unreleased]: https://github.com/avisi-apps/gaps/compare/%s...HEAD\n" new-version)
+                                (format "[%s]: https://github.com/avisi-apps/gaps/releases/tag/%s" (subs new-version 1) new-version))))]
+    (spit "CHANGELOG.md" updated-changelog)))
+
+(defn generate-release-tag [_]
+  (let [new-version (format "v%s.%s" base-version (b/git-count-revs nil))]
+    (println "Updating changelog (moving everything from Unreleased to " new-version)
+    (update-changelog! new-version)
+    (println "Updated changelog")
+    (b/git-process
+      {:git-args "add CHANGELOG.md"})
+    (println "Creating new release tag: " new-version)
+    (b/git-process
+      {:git-args (str "tag " new-version)})
+    (println "Created new release tag: " new-version)
+    (println "Pushing master and new release tag: " new-version)
+    (b/git-process {:git-args (str "push origin master" )})
+    (b/git-process {:git-args (str "push origin " new-version)})
+    (println "Pushed new release tag: " new-version)))
 
 (defn repl [{:keys [port] :or {port 5555}}]
   (server/start-server {:name "build repl"

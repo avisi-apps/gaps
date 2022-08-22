@@ -54,5 +54,8 @@ workflows:
           requires:
             - compile-tests
       - deploy-all-jars:
+          tags:
+            only:
+              - /.*/
           requires:
             - "run tests"
