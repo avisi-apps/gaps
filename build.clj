@@ -117,7 +117,7 @@
   @(promise))
 
 (defn changed-files-from-release-branch []
-  (when (not= release-branch current-branch)
+  (when (and current-branch (not= release-branch current-branch))
     (->
       (b/git-process {:git-args "diff master --name-only"})
       (str/split-lines))))
