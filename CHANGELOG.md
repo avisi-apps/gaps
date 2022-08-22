@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Fixed releasing by pushing a tag
 
-## [0.0.31] - 2022-08-18
+## [0.0.30] - 2022-08-18
 *Was still fighting with automation the release process here don't use this version*
 ### Added
 - Added fulcro-google-remote library `com.avisi-apps.gaps/fulcro-google-remote-library
