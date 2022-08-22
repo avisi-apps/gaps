@@ -11,14 +11,24 @@
   (symbol "com.avisi-apps.gaps" n))
 
 (def scm-url "git@github.com:avisi-apps/gaps.git")
+
 (def current-tag (b/git-process {:git-args "describe --tags --exact-match"}))
+(println "Current tag = " current-tag)
+
 (def version
   (if current-tag
     (subs current-tag 1)
     (format "0.0.%s-SNAPSHOT" (b/git-count-revs nil))))
+(println "Version = " version)
+
+
 (def modules-folder (b/resolve-path "modules"))
+
 (def current-branch (b/git-process {:git-args "branch --show-current"}))
+(println "Current branch = " current-branch)
+
 (def release-branch "master")
+
 (def modules (->>
                (.listFiles ^File modules-folder)
                (filter #(.isDirectory ^File %))
@@ -27,9 +37,9 @@
 (defn sha
   [{:keys [dir path] :or {dir "."}}]
   (some-> {:command-args (cond-> ["git" "rev-parse" "HEAD"]
-                       path (conj "--" path))
-       :dir (.getPath (b/resolve-path dir))
-       :out :capture}
+                           path (conj "--" path))
+           :dir (.getPath (b/resolve-path dir))
+           :out :capture}
     b/process
     :out
     str/trim))
@@ -126,10 +136,13 @@
   (let [changed-modules (into #{}
                           (keep file-path->affected-module)
                           (changed-files-from-release-branch))
+        _ (println "loading base config")
         base-config (->
                       (io/file ".circleci/continue-config.yml")
                       (slurp)
                       (yaml/parse-string))
+
+        _ (println "loaded base config")
         config-with-changed-modules (reduce
                                       (fn [config module]
                                         ;; Here we could possibly add extra build test for certain modules
