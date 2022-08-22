@@ -130,14 +130,20 @@
     (spit "CHANGELOG.md" updated-changelog)))
 
 (defn generate-release-tag [_]
+  (when (not= current-branch "master")
+    (throw (ex-info (format "You can only release from the master branch not: %s" current-branch) {:current-branch current-branch}))    )
+
   (let [new-version (format "v%s.%s" base-version (b/git-count-revs nil))]
-    (println "Updating changelog (moving everything from Unreleased to " new-version)
+    (println (format "Updating changelog (moving everything from Unreleased to %s)" new-version))
     (update-changelog! new-version)
     (println "Updated changelog")
+
+    (println "Add new changelog")
     (b/git-process
       {:git-args "add CHANGELOG.md"})
+    (println "Commit new changelog")
     (b/git-process
-      {:git-args (format "commit -m \"Prepare release %s\"" new-version)})
+      {:git-args ["commit" "-m" (format "\"Prepare release %s\"" new-version)]})
     (println "Creating new release tag: " new-version)
     (b/git-process
       {:git-args (str "tag " new-version)})
