@@ -26,7 +26,7 @@
 
 (defn sha
   [{:keys [dir path] :or {dir "."}}]
-  (-> {:command-args (cond-> ["git" "rev-parse" "HEAD"]
+  (some-> {:command-args (cond-> ["git" "rev-parse" "HEAD"]
                        path (conj "--" path))
        :dir (.getPath (b/resolve-path dir))
        :out :capture}
@@ -53,7 +53,7 @@
         (-> opts
           (assoc :version version
                  :basis basis
-                 :scm {:tag module-sha
+                 :scm {:tag (or current-tag  module-sha)
                        :connection (str "scm:git:" scm-url)
                        :developerConnection (str "scm:git:" scm-url)
                        :url scm-url})
