@@ -136,6 +136,8 @@
     (println "Updated changelog")
     (b/git-process
       {:git-args "add CHANGELOG.md"})
+    (b/git-process
+      {:git-args (format "commit -m \"Prepare release %s\"" new-version)})
     (println "Creating new release tag: " new-version)
     (b/git-process
       {:git-args (str "tag " new-version)})
