@@ -10,6 +10,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+## [v0.0.41]
+### Added
+
+### Changed
+
+### Fixed
+
 ## [v0.0.39]
 ### Added
 - Adds a Make command to trigger a release and update the changelog
@@ -35,7 +42,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.39...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.41...HEAD
+[0.0.41]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.41
 [0.0.39]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.39
 [0.0.30]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.30
 [0.0.4]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.4
