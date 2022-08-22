@@ -34,6 +34,8 @@
                (filter #(.isDirectory ^File %))
                (mapv (fn [^File file] (name->module (.getName file))))))
 
+(println "Modules found = " modules)
+
 (defn sha
   [{:keys [dir path] :or {dir "."}}]
   (some-> {:command-args (cond-> ["git" "rev-parse" "HEAD"]
