@@ -1,5 +1,5 @@
 (ns com.avisi-apps.gaps.log
-  (:require-macros avisi-apps.gaps.log)
+  (:require-macros com.avisi-apps.gaps.log)
   (:require
     ["bunyan" :as bunyan]
     [cljs-bean.core :refer [->js bean]]
