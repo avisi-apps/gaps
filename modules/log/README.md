@@ -13,7 +13,7 @@ See the below example for usage examples:
 ```clojure
 (ns example
   ;; First make sure you add this require
-  (:require [avisi-apps.gaps.log :as log]))
+  (:require [com.avisi-apps.gaps.log :as log]))
 
 ;; You need to log maps, make sure to always add a `:message`
 (log/info {:message "My human readable message"

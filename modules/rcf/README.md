@@ -7,22 +7,22 @@ rcf tests on CI.
 
 ## Adding a dev preload
 
-For enabling hyperfidde you can add the following preload to shadow-cljs `avisi-apps.gaps.rcf.preload`. This looks as 
+For enabling hyperfidde you can add the following preload to shadow-cljs `com.avisi-apps.gaps.rcf.preload`. This looks as 
 follows:
 
 ```clojure
-:devtools {:preloads [avisi-apps.gaps.rcf.preload]}
+:devtools {:preloads [com.avisi-apps.gaps.rcf.preload]}
 ```
 
 ## Extracting tests for CI
 
 When you write a lot of inline test it would be nice if those tests get ran on CI. There is hook for that 
-`avisi-apps.gaps.rcf.shadow-cljs.hook` below is an example build for creating a build to run NodeJS tests:
+`com.avisi-apps.gaps.rcf.shadow-cljs.hook` below is an example build for creating a build to run NodeJS tests:
 
 
 ```clojure
 {:target :node-test
  :output-to "modules/test/index.js"
  :ns-regexp "-test$"
- :build-hooks [(avisi-apps.gaps.rcf.shadow-cljs.hook/hook)]}
+ :build-hooks [(com.avisi-apps.gaps.rcf.shadow-cljs.hook/hook)]}
 ```
