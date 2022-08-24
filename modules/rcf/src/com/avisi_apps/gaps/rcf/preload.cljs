@@ -1,4 +1,4 @@
-(ns avisi-apps.gaps.rcf.preload
+(ns com.avisi-apps.gaps.rcf.preload
   (:require hyperfiddle.rcf
             [avisi-apps.gaps.log :as log]))
 

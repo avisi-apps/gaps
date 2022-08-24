@@ -1,4 +1,4 @@
-(ns avisi-apps.gaps.rcf.shadow-cljs.hook
+(ns com.avisi-apps.gaps.rcf.shadow-cljs.hook
   (:require
     [shadow.build :as build]
     [shadow.build.targets.node-test :as node-test-target]

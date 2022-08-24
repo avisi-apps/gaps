@@ -1,4 +1,4 @@
-(ns avisi-apps.gaps.log)
+(ns com.avisi-apps.gaps.log)
 
 (defn- log-expr
   [level data m]

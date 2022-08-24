@@ -1,4 +1,4 @@
-(ns avisi-apps.gaps.log
+(ns com.avisi-apps.gaps.log
   (:require-macros avisi-apps.gaps.log)
   (:require
     ["bunyan" :as bunyan]
