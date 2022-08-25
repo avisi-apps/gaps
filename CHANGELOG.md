@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Fixed
-- Fix macro require of logging library
+- Fix macro require of logging library for rcf preload
 
 ## [v0.0.45]
 ### Changed

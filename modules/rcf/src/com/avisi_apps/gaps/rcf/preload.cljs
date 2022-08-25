@@ -1,6 +1,6 @@
 (ns com.avisi-apps.gaps.rcf.preload
   (:require hyperfiddle.rcf
-            [avisi-apps.gaps.log :as log]))
+            [com.avisi-apps.gaps.log :as log]))
 
 (log/warn {:message "ENABLING HYPERFIDDLE PRELOAD (Make sure this not happening in production)"})
 
