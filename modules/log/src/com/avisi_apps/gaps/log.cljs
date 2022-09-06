@@ -18,6 +18,7 @@
     (clj->js
       (merge
         {:name LOGGER_NAME
+         :serializers (.-stdSerializers ^js bunyan)
          :streams
          [{:stream js/process.stdout
            :level (if ^boolean goog/DEBUG "debug" "info")}]}))))
@@ -49,19 +50,20 @@
       "ALERT" (.fatal ^js logger* js-payload msg)
       "EMERGENCY" (.fatal ^js logger* js-payload msg))))
 
-(defn request->log [{:keys [request-method url content-length remote-addr protocol] :as args}]
+(defn request->log [{:keys [request-method original-url protocol] :as args}]
   (when (seq args)
     #js {"requestMethod" (and request-method (str/upper-case (name request-method))),
-         "requestUrl" url,
-         "requestSize" content-length,
-         "remoteIp" remote-addr,
+         "requestUrl" original-url,
          "protocol" protocol}))
 
 (tests
   "Don't fail on empty request"
   (request->log {}) := nil
   "Don't fail on empty request-method"
-  (js->clj (request->log {:url "/foo/bar"})) := {"requestMethod" nil, "requestUrl" "/foo/bar", "requestSize" nil, "remoteIp" nil, "protocol" nil})
+  (js->clj (request->log {:original-url "/foo/bar"})) := {"requestMethod" nil, "requestUrl" "/foo/bar", "protocol" nil}
+  "Uppercase request-method"
+  (js->clj (request->log {:original-url "/foo/bar"
+                          :request-method :get})) := {"requestMethod" "GET", "requestUrl" "/foo/bar", "protocol" nil})
 
 (defn add-error-data [data exception]
   (let [{:keys [stack request response]} (bean exception)]
@@ -78,7 +80,7 @@
 (defn log [{:keys [level data line ns file]}]
   (log!
     (->
-      (dissoc data :error)
+      (dissoc data :error :request)
       (assoc
         :severity (get kw->log-severity level "INFO")
         ;; Based on https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#LogEntrySourceLocation
@@ -86,4 +88,6 @@
         {:ns ns
          :file file
          :line line})
-      (cond-> (:error data) (add-error-data (:error data))))))
+      (cond->
+        (:error data) (add-error-data (:error data))
+        (:request data) (assoc :httpRequest (request->log (:request data)))))))

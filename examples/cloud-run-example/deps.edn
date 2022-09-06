@@ -10,4 +10,4 @@
         metosin/reitit-middleware {:mvn/version "0.5.18"}
         metosin/reitit-malli {:mvn/version "0.5.18"}
         metosin/reitit-swagger {:mvn/version "0.5.18"}
-        thheller/shadow-cljs {:mvn/version "2.19.0"}}}
+        thheller/shadow-cljs {:mvn/version "2.20.1"}}}

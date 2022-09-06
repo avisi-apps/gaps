@@ -4,5 +4,5 @@
  :builds {:functions {:target :node-library
                       :js-options {:js-package-dirs ["functions/node_modules"]}
                       :output-to "functions/index.js"
-                      :devtools {:preloads [avisi-apps.gaps.rcf.preload]}
-                      :exports-var avisi-apps.firebase-example.functions/cloud-functions}}}
+                      :devtools {:preloads [com.avisi-apps.firebase-example.functions devtools.preload com.avisi-apps.gaps.rcf.preload]}
+                      :exports-var com.avisi-apps.firebase-example.functions/cloud-functions}}}

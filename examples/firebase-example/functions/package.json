@@ -14,11 +14,13 @@
   "main": "index.js",
   "dependencies": {
     "bunyan": "1.8.15",
+    "expressjs": "1.0.1",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",
     "ws": "8.8.1"
   },
   "devDependencies": {
+    "source-map-support": "0.5.21",
     "firebase-functions-test": "^0.2.0"
   },
   "private": true

@@ -1,0 +1,9 @@
+;; shadow-cljs configuration
+{:deps true
+
+ :builds {:app {:target :node-script
+                :output-to "target/index.js"
+                :devtools {:before-load-async com.avisi-apps.cloud-run-example.core/stop
+                           :after-load-async com.avisi-apps.cloud-run-example.core/start
+                           :preloads [com.avisi-apps.cloud-run-example.core com.avisi-apps.gaps.rcf.preload]}
+                :main com.avisi-apps.cloud-run-example.core/main}}}
