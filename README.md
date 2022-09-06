@@ -13,5 +13,9 @@ A logging module to do structured logging with [Bunyan](https://github.com/trent
 ## [rcf](modules/rcf/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/rcf.svg)](https://clojars.org/com.avisi-apps.gaps/rcf)
 Helpers for working with [RCF](https://github.com/hyperfiddle/rcf)
 
-## [fulcro-google-remote](modules/rcf/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/fulcro-google-remote.svg)](https://clojars.org/com.avisi-apps.gaps/fulcro-google-remote)
+## [fulcro-google-remote](modules/fulcro-google-remote/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/fulcro-google-remote.svg)](https://clojars.org/com.avisi-apps.gaps/fulcro-google-remote)
 Helpers for working a remote that is hosted on google with fulcro [fulcro-google-remote](https://github.com/hyperfiddle/fulcro-google-remote)
+
+## [reitit-express](modules/reitit-express/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/reitit-express.svg)](https://clojars.org/com.avisi-apps.gaps/reitit-express)
+Library to use reitit with clojurescript with [Express](http://expressjs.com). This makes it possibble to use reitit easily
+for Google Cloud functions or Google Cloud run with minimal differences.

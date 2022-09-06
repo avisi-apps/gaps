@@ -13,6 +13,8 @@ follows:
 ```clojure
 :devtools {:preloads [com.avisi-apps.gaps.rcf.preload]}
 ```
+*It is a good idea to also add your dev startup ns before `com.avisi-apps.gaps.rcf.preload` this makes sure that rcf only
+runs test for reloaded namespaces instead of all tests in your project which get required by your bootstrap*
 
 ## Extracting tests for CI
 

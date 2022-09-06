@@ -1,22 +1,16 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define([], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = factory();
-    } else {
-        root.returnExports = factory();
-  }
-})(this, function () {
+#!/usr/bin/env node
+(function(){
+var shadow$provide = {};
 
-var SHADOW_IMPORT_PATH = __dirname + '/../.shadow-cljs/builds/functions/dev/out/cljs-runtime';
-if (__dirname == '.') { SHADOW_IMPORT_PATH = "/home/mitsel/Development/gaps/examples/firebase-example/.shadow-cljs/builds/functions/dev/out/cljs-runtime"; }
+var SHADOW_IMPORT_PATH = __dirname + '/../.shadow-cljs/builds/app/dev/out/cljs-runtime';
+if (__dirname == '.') { SHADOW_IMPORT_PATH = "/home/mitsel/Development/gaps/examples/cloud-run-example/.shadow-cljs/builds/app/dev/out/cljs-runtime"; }
 global.$CLJS = global;
 global.shadow$provide = {};
 try {require('source-map-support').install();} catch (e) {console.warn('no "source-map-support" (run "npm install source-map-support --save-dev" to get it)');}
 
 global.CLOSURE_NO_DEPS = true;
 
-global.CLOSURE_DEFINES = {"shadow.cljs.devtools.client.env.repl_pprint":false,"shadow.cljs.devtools.client.env.reload_strategy":"optimized","shadow.cljs.devtools.client.env.devtools_url":"","shadow.cljs.devtools.client.env.autoload":true,"shadow.cljs.devtools.client.env.proc_id":"2bd9166b-3d42-4b7c-8e24-4cab457d1771","shadow.cljs.devtools.client.env.use_document_protocol":false,"goog.ENABLE_DEBUG_LOADER":false,"shadow.cljs.devtools.client.env.server_port":9630,"shadow.cljs.devtools.client.env.server_token":"46c5cabc-6b5f-4275-9a1c-ff32384771f2","shadow.cljs.devtools.client.env.use_document_host":true,"shadow.cljs.devtools.client.env.module_format":"goog","goog.LOCALE":"en","shadow.cljs.devtools.client.env.build_id":"functions","shadow.cljs.devtools.client.env.ignore_warnings":false,"goog.DEBUG":true,"cljs.core._STAR_target_STAR_":"nodejs","shadow.cljs.devtools.client.env.log":true,"shadow.cljs.devtools.client.env.ssl":false,"shadow.cljs.devtools.client.env.enabled":true,"shadow.cljs.devtools.client.env.server_host":"localhost","shadow.cljs.devtools.client.env.worker_client_id":2,"goog.TRANSPILE":"never"};
+global.CLOSURE_DEFINES = {"shadow.cljs.devtools.client.env.repl_pprint":false,"shadow.cljs.devtools.client.env.reload_strategy":"optimized","shadow.cljs.devtools.client.env.devtools_url":"","shadow.cljs.devtools.client.env.autoload":true,"shadow.cljs.devtools.client.env.proc_id":"66d9909a-ed2e-425f-9c7a-209d7be693d9","shadow.cljs.devtools.client.env.use_document_protocol":false,"goog.ENABLE_DEBUG_LOADER":false,"shadow.cljs.devtools.client.env.server_port":9630,"shadow.cljs.devtools.client.env.server_token":"d41496c0-6b06-44d8-9386-c2db694ad55f","shadow.cljs.devtools.client.env.use_document_host":true,"shadow.cljs.devtools.client.env.module_format":"goog","goog.LOCALE":"en","shadow.cljs.devtools.client.env.build_id":"app","shadow.cljs.devtools.client.env.ignore_warnings":false,"goog.DEBUG":true,"cljs.core._STAR_target_STAR_":"nodejs","shadow.cljs.devtools.client.env.log":true,"shadow.cljs.devtools.client.env.ssl":false,"shadow.cljs.devtools.client.env.enabled":true,"shadow.cljs.devtools.client.env.server_host":"localhost","shadow.cljs.devtools.client.env.worker_client_id":2,"goog.TRANSPILE":"never"};
 
 var goog = global.goog = {};
 
@@ -822,7 +816,7 @@ if (!COMPILED && goog.DEPENDENCIES_ENABLED) {
       return evalCheck("({...rest}\x3d{}),1");
     });
     addNewerLanguageTranspilationCheck("es_2019", function() {
-      return evalCheck('let r;try{r\x3d"\u2029"}catch{};r');
+      return evalCheck('let r;try{r\x3d" "}catch{};r');
     });
     addNewerLanguageTranspilationCheck("es_2020", function() {
       return evalCheck("null?.x??1");
@@ -1539,7 +1533,25 @@ SHADOW_IMPORT("goog.uri.uri.js");
 SHADOW_IMPORT("goog.string.stringbuffer.js");
 SHADOW_IMPORT("cljs.core.js");
 SHADOW_IMPORT("clojure.string.js");
+SHADOW_IMPORT("clojure.set.js");
+SHADOW_IMPORT("meta_merge.core.js");
+SHADOW_IMPORT("reitit.exception.js");
+SHADOW_IMPORT("reitit.trie.js");
+SHADOW_IMPORT("reitit.impl.js");
+SHADOW_IMPORT("reitit.core.js");
 SHADOW_IMPORT("cljs.pprint.js");
+SHADOW_IMPORT("reitit.middleware.js");
+SHADOW_IMPORT("reitit.ring.js");
+SHADOW_IMPORT("shadow.js.shim.module$express.js");
+SHADOW_IMPORT("shadow.js.shim.module$cookie_parser.js");
+SHADOW_IMPORT("promesa.protocols.js");
+SHADOW_IMPORT("promesa.util.js");
+SHADOW_IMPORT("promesa.exec.js");
+SHADOW_IMPORT("promesa.impl.js");
+SHADOW_IMPORT("promesa.core.js");
+SHADOW_IMPORT("shadow.js.shim.module$bunyan.js");
+SHADOW_IMPORT("cljs_bean.from.cljs.core.js");
+SHADOW_IMPORT("cljs_bean.core.js");
 SHADOW_IMPORT("cljs.test.js");
 SHADOW_IMPORT("clojure.walk.js");
 SHADOW_IMPORT("cljs.spec.gen.alpha.js");
@@ -1551,12 +1563,26 @@ SHADOW_IMPORT("hyperfiddle.rcf.unify.js");
 SHADOW_IMPORT("hyperfiddle.rcf.time.js");
 SHADOW_IMPORT("hyperfiddle.rcf.queue.js");
 SHADOW_IMPORT("hyperfiddle.rcf.js");
-SHADOW_IMPORT("shadow.js.shim.module$bunyan.js");
-SHADOW_IMPORT("cljs_bean.from.cljs.core.js");
-SHADOW_IMPORT("cljs_bean.core.js");
-SHADOW_IMPORT("clojure.set.js");
-SHADOW_IMPORT("avisi_apps.gaps.log.js");
-SHADOW_IMPORT("avisi_apps.gaps.rcf.preload.js");
+SHADOW_IMPORT("com.avisi_apps.gaps.log.js");
+SHADOW_IMPORT("com.avisi_apps.gaps.reitit_express.http.js");
+SHADOW_IMPORT("com.avisi_apps.gaps.reitit_express.middleware.content_negotiation.formats.core.js");
+SHADOW_IMPORT("com.avisi_apps.gaps.reitit_express.middleware.content_negotiation.formats.json.js");
+SHADOW_IMPORT("com.cognitect.transit.util.js");
+SHADOW_IMPORT("com.cognitect.transit.delimiters.js");
+SHADOW_IMPORT("com.cognitect.transit.caching.js");
+SHADOW_IMPORT("com.cognitect.transit.eq.js");
+SHADOW_IMPORT("com.cognitect.transit.types.js");
+SHADOW_IMPORT("com.cognitect.transit.impl.decoder.js");
+SHADOW_IMPORT("com.cognitect.transit.impl.reader.js");
+SHADOW_IMPORT("com.cognitect.transit.handlers.js");
+SHADOW_IMPORT("com.cognitect.transit.impl.writer.js");
+SHADOW_IMPORT("com.cognitect.transit.js");
+SHADOW_IMPORT("cognitect.transit.js");
+SHADOW_IMPORT("com.avisi_apps.gaps.reitit_express.middleware.content_negotiation.formats.transit.js");
+SHADOW_IMPORT("shadow.js.shim.module$negotiator.js");
+SHADOW_IMPORT("com.avisi_apps.gaps.reitit_express.middleware.content_negotiation.js");
+SHADOW_IMPORT("com.avisi_apps.cloud_run_example.core.js");
+SHADOW_IMPORT("com.avisi_apps.gaps.rcf.preload.js");
 SHADOW_IMPORT("shadow.js.shim.module$ws.js");
 SHADOW_IMPORT("cljs.tools.reader.impl.utils.js");
 SHADOW_IMPORT("cljs.tools.reader.reader_types.js");
@@ -1571,17 +1597,6 @@ SHADOW_IMPORT("clojure.datafy.js");
 SHADOW_IMPORT("shadow.remote.runtime.api.js");
 SHADOW_IMPORT("shadow.remote.runtime.writer.js");
 SHADOW_IMPORT("shadow.remote.runtime.shared.js");
-SHADOW_IMPORT("com.cognitect.transit.util.js");
-SHADOW_IMPORT("com.cognitect.transit.delimiters.js");
-SHADOW_IMPORT("com.cognitect.transit.caching.js");
-SHADOW_IMPORT("com.cognitect.transit.eq.js");
-SHADOW_IMPORT("com.cognitect.transit.types.js");
-SHADOW_IMPORT("com.cognitect.transit.impl.decoder.js");
-SHADOW_IMPORT("com.cognitect.transit.impl.reader.js");
-SHADOW_IMPORT("com.cognitect.transit.handlers.js");
-SHADOW_IMPORT("com.cognitect.transit.impl.writer.js");
-SHADOW_IMPORT("com.cognitect.transit.js");
-SHADOW_IMPORT("cognitect.transit.js");
 SHADOW_IMPORT("shadow.cljs.devtools.client.env.js");
 SHADOW_IMPORT("shadow.remote.runtime.cljs.js_builtins.js");
 SHADOW_IMPORT("goog.string.stringformat.js");
@@ -1591,9 +1606,6 @@ SHADOW_IMPORT("shadow.remote.runtime.tap_support.js");
 SHADOW_IMPORT("shadow.remote.runtime.eval_support.js");
 SHADOW_IMPORT("shadow.cljs.devtools.client.shared.js");
 SHADOW_IMPORT("shadow.cljs.devtools.client.node.js");
-SHADOW_IMPORT("shadow.js.shim.module$firebase_functions.js");
-SHADOW_IMPORT("avisi_apps.firebase_example.functions.js");
-SHADOW_IMPORT("shadow.umd_helper.js");
 SHADOW_IMPORT("shadow.module.main.append.js");
-return shadow.umd_helper.get_exports();
-});
+
+})();
