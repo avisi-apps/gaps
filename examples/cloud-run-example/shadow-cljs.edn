@@ -1,8 +1,18 @@
 ;; shadow-cljs configuration
 {:deps true
 
- :builds {:app {:target :node-script
-                :output-to "target/index.js"
+ :builds {:web {:target :browser
+                :output-dir "resources/public/js"
+                :asset-path "/js"
+                :js-options {:resolve {"dtrace-provider" {:target :global
+                                                          :global "dtrace-provider"}}}
+                :devtools {:after-load com.avisi-apps.cloud-run-example.client/refresh
+                           :preloads [com.fulcrologic.fulcro.inspect.preload
+                                      com.fulcrologic.fulcro.inspect.dom-picker-preload]}
+                :modules {:main {:init-fn com.avisi-apps.cloud-run-example.client/init
+                                 :entries [com.avisi-apps.cloud-run-example.client]}}}
+          :app {:target :node-script
+                :output-to "index.js"
                 :devtools {:before-load-async com.avisi-apps.cloud-run-example.core/stop
                            :after-load-async com.avisi-apps.cloud-run-example.core/start
                            :preloads [com.avisi-apps.cloud-run-example.core com.avisi-apps.gaps.rcf.preload]}

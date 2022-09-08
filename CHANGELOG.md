@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- Added reitit-express library `com.avisi-apps.gapsreitit-express`
+- log modules is now also usable client side
 
 ### Changed
+- log module now uses `pino` instead of `bunyan`
 
 ### Fixed
 

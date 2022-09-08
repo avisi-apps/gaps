@@ -8,7 +8,7 @@ See the readme of every project in [modules](modules) for documentation about ea
 
 # Modules
 ## [log](modules/log/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/log.svg)](https://clojars.org/com.avisi-apps.gaps/log)
-A logging module to do structured logging with [Bunyan](https://github.com/trentm/node-bunyan#readme) which helps you to do structured logging with JSON.
+A logging module to do structured logging with [Pino](https://getpino.io) which helps you to do structured logging with JSON.
 
 ## [rcf](modules/rcf/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/rcf.svg)](https://clojars.org/com.avisi-apps.gaps/rcf)
 Helpers for working with [RCF](https://github.com/hyperfiddle/rcf)
