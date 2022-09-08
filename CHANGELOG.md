@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Fixed
+
+## [v0.0.54]
+### Added
 - Added reitit-express library `com.avisi-apps.gapsreitit-express`
 - log modules is now also usable client side
 
@@ -47,7 +54,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.48...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.54...HEAD
+[0.0.54]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.54
 [0.0.48]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.48
 [0.0.45]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.45
 [0.0.41]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.41
