@@ -3,10 +3,10 @@
 Google cloud logging compatible structured logging.
 
 # Usage
-This project uses bunyan for it's logging make sure you added that to your dependencies by running:
+This project uses pino (used to be bunyan but that is unmaintained) for it's logging make sure you added that to your dependencies by running:
 
 ```shell
-yarn add --exact bunyan
+yarn add --exact pino
 ```
 
 See the below example for usage examples:
@@ -33,4 +33,11 @@ See the below example for usage examples:
 ;; You can also log debug message (are by default only enabled in shadow-cljs dev mode)
 ;; Will be removed on release builds
 (log/debug {:message "debug logging"})
+```
+
+## Pro tip
+If you want to make the output of logging more readable you can use `pino-pretty`. For example
+
+```shell
+yarn node index.js | yarn pino-pretty
 ```

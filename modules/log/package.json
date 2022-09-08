@@ -2,7 +2,7 @@
   "name": "avisi-apps-gaps-log",
   "version": "1.0.0",
   "dependencies": {
-    "bunyan": "1.8.15",
+    "pino": "8.5.0",
     "shadow-cljs": "2.19.8"
   }
 }

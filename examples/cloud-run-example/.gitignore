@@ -1,1 +1,5 @@
 /target
+/index.js
+/resources/public/js/**
+!/resources/public/js/.gitkeep
+

@@ -35,7 +35,7 @@
 
 (defn main [& {:keys [done]}]
   (let [ring-handler (vreset! ring-handler (ring/ring-handler router not-found-handler {:middleware [content-negotiation/format-middleware]}))
-        app (http/expressjs-app ring-handler)]
+        app (http/expressjs-app ring-handler {::http/static-dirs ["resources/public"]})]
     (vreset! server-ref (http/listen! app 3000)))
   (when done (done)))
 

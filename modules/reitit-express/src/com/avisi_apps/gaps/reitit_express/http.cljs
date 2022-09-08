@@ -5,7 +5,8 @@
     [promesa.core :as p]
     [com.avisi-apps.gaps.log :as log]
     [cljs-bean.core :refer [->js]]
-    [clojure.string :as str])
+    [clojure.string :as str]
+    [cljs.spec.alpha :as s])
   (:import [goog Uri]))
 
 (defn- translate-cookie-opts
@@ -63,6 +64,8 @@
     (.set #js {"content-type" "text/plain"})
     (.send "Unexpected error")))
 
+(s/def ::static-dirs (s/coll-of string?))
+
 (defn expressjs-app
   "Create an express application from a handler which handles (fn [request respond raise]). Typically, http-handler is the
   result of:
@@ -70,10 +73,17 @@
   ```
   (def ring-handler (ring/ring-handler router not-found-handler))
   ```
+
+  # Options
+  `com.avisi-apps.gaps.reitit-express.http/static-dirs` []
+  If you want to service static folders you can give a list of folders that is should make available
    "
-  [http-handler]
+  [http-handler & {::keys [static-dirs]}]
   (let [app ^js (express)]
     (.use app (cookie-parser))
+    (run!
+      #(.use app (.static ^js express %))
+      static-dirs)
     (.use app (fn reitit-express-middleware [node-request node-response _]
                 (->
                   (p/do

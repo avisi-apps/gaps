@@ -1,10 +1,11 @@
 (ns com.avisi-apps.gaps.log
   (:require-macros com.avisi-apps.gaps.log)
   (:require
-    ["bunyan" :as bunyan]
+    ["pino" :as pino]
     [cljs-bean.core :refer [->js bean]]
     [hyperfiddle.rcf :refer [tests]]
-    [clojure.string :as str]))
+    [clojure.string :as str]
+    [clojure.set :as set]))
 
 (declare debug info warn error spy)
 
@@ -12,16 +13,6 @@
 ;; For more information see: https://shadow-cljs.github.io/docs/UsersGuide.html#closure-defines
 (goog-define LOGGER_NAME "avisi-apps-logger")
 
-(def logger
-  (.createLogger
-    ^js bunyan
-    (clj->js
-      (merge
-        {:name LOGGER_NAME
-         :serializers (.-stdSerializers ^js bunyan)
-         :streams
-         [{:stream js/process.stdout
-           :level (if ^boolean goog/DEBUG "debug" "info")}]}))))
 
 (def kw->log-severity
   {:debug "DEBUG"
@@ -32,6 +23,14 @@
    :critical "CRITICAL"
    :alert "ALERT"
    :emergency "EMERGENCY"})
+
+(def severity->kw (set/map-invert kw->log-severity))
+
+
+(def logger
+  (pino.
+    #js{:name LOGGER_NAME
+        :level (if ^boolean goog/DEBUG "debug" "info")}))
 
 (defn log!
   [{:keys [severity message]

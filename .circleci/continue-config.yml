@@ -27,7 +27,7 @@ jobs:
           command: rm -rf ~/.gitconfig
           name: Get rid of erroneous git config
       - node/install-packages:
-          cache-version: v1
+          cache-version: v2
           include-branch-in-cache-key: false
           pkg-manager: yarn
       - firebase-orb/install-clj-deps:
