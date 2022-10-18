@@ -81,6 +81,10 @@
   [http-handler & {::keys [static-dirs]}]
   (let [app ^js (express)]
     (.use app (cookie-parser))
+    (.use app (.json ^js express))
+    (.use app (.raw ^js express #js {:type #js ["application/transit+json" "application/octet-stream"]}))
+    (.use app (.text ^js express))
+    (.use app (.urlencoded ^js express #js {:extended true}))
     (run!
       #(.use app (.static ^js express %))
       static-dirs)

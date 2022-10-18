@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- Added express body parsers (json, raw, text, urlencoded)
+- Raw body parser now also accepts application/transit+json
 
 ### Changed
 
