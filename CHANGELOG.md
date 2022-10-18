@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Fixed
+
+## [v0.0.58]
+### Added
 - Added express body parsers (json, raw, text, urlencoded)
 - Raw body parser now also accepts application/transit+json
 
@@ -59,7 +66,8 @@ Broken release. Do not use.
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.54...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.58...HEAD
+[0.0.58]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.58
 [0.0.54]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.54
 [0.0.48]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.48
 [0.0.45]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.45
