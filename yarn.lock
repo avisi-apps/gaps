@@ -756,6 +756,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "avisi-apps-gaps-log@workspace:modules/log"
   dependencies:
+    axios: 0.24.0
     pino: 8.5.0
     shadow-cljs: 2.19.8
   languageName: unknown
@@ -783,6 +784,15 @@ __metadata:
   version: 1.11.0
   resolution: "aws4@npm:1.11.0"
   checksum: 5a00d045fd0385926d20ebebcfba5ec79d4482fe706f63c27b324d489a04c68edb0db99ed991e19eda09cb8c97dc2452059a34d97545cebf591d7a2b5a10999f
+  languageName: node
+  linkType: hard
+
+"axios@npm:0.24.0":
+  version: 0.24.0
+  resolution: "axios@npm:0.24.0"
+  dependencies:
+    follow-redirects: ^1.14.4
+  checksum: 468cf496c08a6aadfb7e699bebdac02851e3043d4e7d282350804ea8900e30d368daa6e3cd4ab83b8ddb5a3b1e17a5a21ada13fc9cebd27b74828f47a4236316
   languageName: node
   linkType: hard
 
@@ -1437,6 +1447,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cloud-run-example@workspace:examples/cloud-run-example"
   dependencies:
+    axios: 0.24.0
     cookie-parser: 1.4.6
     express: 4.18.1
     negotiator: 0.6.3
@@ -2694,6 +2705,16 @@ __metadata:
   version: 1.1.0
   resolution: "fn.name@npm:1.1.0"
   checksum: e357144f48cfc9a7f52a82bbc6c23df7c8de639fce049cac41d41d62cabb740cdb9f14eddc6485e29c933104455bdd7a69bb14a9012cef9cd4fa252a4d0cf293
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.14.4":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
   languageName: node
   linkType: hard
 
@@ -6488,6 +6509,7 @@ __metadata:
   resolution: "test@workspace:test"
   dependencies:
     avisi-apps-gaps-log: "workspace:*"
+    axios: 0.24.0
     cookie-parser: 1.4.6
     express: 4.18.1
     negotiator: 0.6.3
