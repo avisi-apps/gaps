@@ -1,3 +1,5 @@
-{:deps {cljs-bean/cljs-bean {:mvn/version "1.8.0"}}
- :aliases {:dev {:extra-deps {com.hyperfiddle/rcf {:mvn/version "20220405"}
+{:deps    {cljs-bean/cljs-bean {:mvn/version "1.8.0"}
+           cljs-http/cljs-http {:mvn/version "0.1.46"}
+           }
+ :aliases {:dev {:extra-deps {com.hyperfiddle/rcf  {:mvn/version "20220405"}
                               thheller/shadow-cljs {:mvn/version "2.19.0"}}}}}

@@ -5,7 +5,8 @@
     [cljs-bean.core :refer [->js bean]]
     [hyperfiddle.rcf :refer [tests]]
     [clojure.string :as str]
-    [clojure.set :as set]))
+    [clojure.set :as set]
+    [com.avisi-apps.gaps.rollbar.core :as rollbar]))
 
 (declare debug info warn error spy)
 
@@ -47,7 +48,8 @@
       "ERROR" (.error ^js logger* js-payload msg)
       "CRITICAL" (.fatal ^js logger* js-payload msg)
       "ALERT" (.fatal ^js logger* js-payload msg)
-      "EMERGENCY" (.fatal ^js logger* js-payload msg))))
+      "EMERGENCY" (.fatal ^js logger* js-payload msg)))
+  (rollbar/logAdditionalInformation severity message))
 
 (defn request->log [{:keys [request-method original-url protocol] :as args}]
   (when (seq args)
