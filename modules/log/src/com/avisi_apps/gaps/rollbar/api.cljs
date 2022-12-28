@@ -7,6 +7,7 @@
     [clojure.string :as str]))
 
 (def token "ff24d39dcc4b46478685f282d8c1ce15")
+;(def token "")
 
 (def https-agent
   (HttpsAgent.

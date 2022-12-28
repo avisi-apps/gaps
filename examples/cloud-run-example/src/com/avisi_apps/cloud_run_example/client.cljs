@@ -2,17 +2,49 @@
   (:require
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
-    [com.avisi-apps.gaps.log :as log]
-    [com.fulcrologic.fulcro.dom :as dom]))
+    [com.fulcrologic.fulcro.dom :as dom]
+    [com.avisi-apps.gaps.rollbar.track-error :as et]
+    [com.avisi-apps.gaps.log :as log]))
 
 (defonce app (app/fulcro-app))
 
+(defn generate-exception
+  "Creates and throws an error, sends it to the logging library."
+  []
+  (try
+    (throw
+      (ex-info "test error 5" {:works "nope"}))
+    (catch ExceptionInfo e
+      (log/error e (ex-data e)))))
+
 (defsc Root [this props]
-  {:initial-state (fn [params] {:initialized? true})
-   :query [:initialized?]}
+  {:initial-state (fn [params] {:initialized? true
+                                :error-tracking (comp/get-initial-state et/error-tracking)})
+   :query [:initialized?
+           { :error-tracking (comp/get-query et/error-tracking)}]
+   :initLocalState
+   (fn [this props]
+     {:enable-error-tracking (fn [] (comp/transact! this [(et/toggle-error-tracking {:toggle true})]))
+      :disable-error-tracking (fn [] (comp/transact! this [(et/toggle-error-tracking {:toggle false})]))})}
+  (let [enable-error-tracking (comp/get-state this :enable-error-tracking)
+        disable-error-tracking (comp/get-state this :disable-error-tracking)]
   (dom/div
     (dom/h1 "TODO")
-    (dom/pre (str props))))
+    (dom/pre (str props))
+    (dom/h3 "Set logging service:")
+    (dom/button
+      {:onClick enable-error-tracking}
+      "Enable tracking")
+    (dom/button
+      {:onClick disable-error-tracking}
+      "Disable tracking")
+    (dom/h3 "Generate error:")
+    (dom/button
+      {:onClick #(generate-exception)}
+      "Generate error")
+    (dom/button
+      {:onClick #(log/info {:message "this is an information log."})}
+      "Generate info"))))
 
 (defn ^:export init
   "Shadow-cljs sets this up to be our entry-point function. See shadow-cljs.edn `:init-fn` in the modules of the main build."
