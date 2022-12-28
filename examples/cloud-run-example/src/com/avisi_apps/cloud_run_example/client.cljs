@@ -7,12 +7,27 @@
 
 (defonce app (app/fulcro-app))
 
+(defn generate-exception
+  "Creates and throws an error, sends it to the logging service."
+  []
+  (try
+    (throw
+      (ex-info "test error 23" {:value "value1" :foo "bar"}))
+    (catch ExceptionInfo e
+      (log/error e (ex-data e)))))
+
 (defsc Root [this props]
   {:initial-state (fn [params] {:initialized? true})
-   :query [:initialized?]}
+   :query         [:initialized?]}
   (dom/div
     (dom/h1 "TODO")
-    (dom/pre (str props))))
+    (dom/pre (str props))
+    (dom/br)
+    (dom/h1 "Buttons")
+    (dom/p "Generate Error")
+    (dom/button
+      {:onClick #(generate-exception)}
+      "Generate error")))
 
 (defn ^:export init
   "Shadow-cljs sets this up to be our entry-point function. See shadow-cljs.edn `:init-fn` in the modules of the main build."

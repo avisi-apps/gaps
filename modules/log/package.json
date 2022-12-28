@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "axios": "0.24.0",
+    "error-stack-parser": "2.0.4",
     "pino": "8.5.0",
     "shadow-cljs": "2.19.8"
   }
