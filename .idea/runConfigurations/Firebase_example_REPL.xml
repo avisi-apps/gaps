@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Firebase example REPL" type="ClojureREPL" factoryName="Remote" activateToolWindowBeforeRun="false">
-    <module name="firebase-example" />
+    <module name="cloud-run-example" />
     <setting name="displayName" value="Firebase example REPL" />
     <setting name="host" value="" />
     <setting name="port" value="0" />
