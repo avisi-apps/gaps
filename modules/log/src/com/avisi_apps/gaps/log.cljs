@@ -48,8 +48,8 @@
       "ERROR" (.error ^js logger* js-payload msg)
       "CRITICAL" (.fatal ^js logger* js-payload msg)
       "ALERT" (.fatal ^js logger* js-payload msg)
-      "EMERGENCY" (.fatal ^js logger* js-payload msg)))
-  (rollbar/logAdditionalInformation severity message))
+      "EMERGENCY" (.fatal ^js logger* js-payload msg))
+      (rollbar/log-additional-information severity message)))
 
 (defn request->log [{:keys [request-method original-url protocol] :as args}]
   (when (seq args)

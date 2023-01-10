@@ -11,9 +11,9 @@
 
 (defmacro debug [data] (log-expr :debug data (meta &form)))
 
-(defmacro info [data] (log-expr :info data (meta &form)))
+(defmacro info [data] (log-expr  :info data (meta &form)))
 
-(defmacro warn [data] (log-expr :warn data (meta &form)))
+(defmacro warn [data] (log-expr  :warn data (meta &form)))
 
 (defmacro error [error data] (log-expr :error `(assoc ~data :error ~error) (meta &form)))
 
