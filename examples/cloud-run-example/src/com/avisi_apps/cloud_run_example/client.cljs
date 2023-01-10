@@ -5,7 +5,7 @@
     [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
     [com.fulcrologic.fulcro.dom :as dom]
     [com.avisi-apps.gaps.log :as log]
-    [com.avisi-apps.gaps.rollbar.track-error :as et]
+    [com.avisi-apps.gaps.rollbar.interface :as et]
     [com.avisi-apps.gaps.rollbar.config :as rollbar-config]))
 
 (def log-token (token-reader/read-token))
@@ -63,7 +63,6 @@
   (app/mount! app Root "app")
   ;; As of Fulcro 3.3.0, this addition will help with stale queries when using dynamic routing:
   (comp/refresh-dynamic-queries! app)
-  (log/debug {:message "Hot reload with no token"})
   (log/debug {:message "Hot reload"}))
 
 (comment

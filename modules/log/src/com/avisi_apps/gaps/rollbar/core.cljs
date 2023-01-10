@@ -2,12 +2,10 @@
   (:require
     [hyperfiddle.rcf :refer [tests]]
     [com.fulcrologic.fulcro.application :as app]
-    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
     [com.avisi-apps.gaps.rollbar.api :as api]
-    [com.avisi-apps.gaps.rollbar.track-error :as track-error]
     [com.avisi-apps.gaps.rollbar.config :as config]))
 
-(defn check-error-tracking-permission [configuration]
+(defn check-permission? [configuration]
   (let [state (app/current-state (:app configuration))]
   (get-in state [:error-tracking :track-error?])))
 
@@ -28,5 +26,5 @@
 
 (defn log-additional-information [severity message]
   (let [configuration (config/get-rollbar-config)]
-    (when (and (validate-rollbar-config? configuration) (check-error-tracking-permission configuration))
+    (when (and (validate-rollbar-config? configuration) (check-permission? configuration))
       (api/send-to-rollbar configuration severity message))))
