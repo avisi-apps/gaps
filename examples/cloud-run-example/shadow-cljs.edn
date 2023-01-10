@@ -13,7 +13,9 @@
                                                           :global "dtrace-provider"}}}
                 :devtools {:after-load com.avisi-apps.cloud-run-example.client/refresh
                            :preloads [com.fulcrologic.fulcro.inspect.preload
-                                      com.fulcrologic.fulcro.inspect.dom-picker-preload]}
+                                      com.fulcrologic.fulcro.inspect.dom-picker-preload
+                                      com.avisi-apps.gaps.rcf.preload
+                                      com.avisi-apps.cloud-run-example.client]}
                 :modules {:main {:init-fn com.avisi-apps.cloud-run-example.client/init
                                  :entries [com.avisi-apps.cloud-run-example.client]}}}
           :app {:target :node-script

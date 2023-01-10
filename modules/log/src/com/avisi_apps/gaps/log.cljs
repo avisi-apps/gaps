@@ -49,7 +49,7 @@
       "CRITICAL" (.fatal ^js logger* js-payload msg)
       "ALERT" (.fatal ^js logger* js-payload msg)
       "EMERGENCY" (.fatal ^js logger* js-payload msg))
-    (rollbar/logAdditionalInformation VERSION severity payload)))
+    (rollbar/log-additional-information VERSION severity payload)))
 
 (defn request->log [{:keys [request-method original-url protocol] :as args}]
   (when (seq args)
@@ -79,9 +79,6 @@
       stack (update :message (fn [message] (str message "\n Error:\n" stack))))))
 
 (defn log [{:keys [level data line ns file]}]
-
- (js/console.log data)
-
   (log!
     (->
       (dissoc data :error :request)

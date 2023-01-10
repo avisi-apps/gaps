@@ -2,7 +2,8 @@
   (:require
     ["error-stack-parser" :as error-stack-parser]
     [hyperfiddle.rcf :refer [tests]]
-    [com.avisi-apps.gaps.rollbar.api :as api]))
+    [com.avisi-apps.gaps.rollbar.api :as api]
+    [com.avisi-apps.gaps.rollbar.config :as config]))
 
 (defn cljs-error? [e]
   (instance? ExceptionInfo e))
@@ -42,7 +43,24 @@
                              :guess_uncaught_frames false}}]
     client))
 
-(defn logAdditionalInformation [VERSION severity payload]
-   (if (= severity "ERROR")
-     (api/send-exception-to-rollbar (build-notifier VERSION) (build-client VERSION) severity payload (build-frames-for-exception (parse-error-stack payload)))
-     (api/send-message-to-rollbar (build-notifier VERSION) severity (:message payload))))
+(defn validate-rollbar-config? [configuration]
+  (if (and (contains? configuration :log/token) (string? (get configuration :log/token)))
+    true
+    false))
+
+(tests
+  "TC1: Should be valid config"
+  (validate-rollbar-config? {:log/token "testToken"}) := true
+  "TC2: Should be invalid config, token is wrong dataType"
+  (validate-rollbar-config? {:log/token 123}) := false
+  "TC3: Should be invalid config, missing the :log/token key instead :token was provided"
+  (validate-rollbar-config? {:token "testValue"}) := false
+  "TC4: Should be invalid config, the map is empty"
+  (validate-rollbar-config? {}) := false)
+
+(defn log-additional-information [VERSION severity payload]
+  (let [configuration (config/get-rollbar-config)]
+    (when (validate-rollbar-config? configuration)
+      (if (= severity "ERROR")
+        (api/send-exception-to-rollbar configuration (build-notifier VERSION) (build-client VERSION) severity payload (build-frames-for-exception (parse-error-stack payload)))
+        (api/send-message-to-rollbar configuration (build-notifier VERSION) severity (:message payload))))))
