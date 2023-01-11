@@ -16,22 +16,22 @@
       :timeout 60000
       :freeSocketTimeout 30000}))
 
-(defn validateStatus [status]
+(defn validate-status [status]
   (and (>= status 200) (< status 400)))
 
 (tests
   "TC1: Valid status"
-  (validateStatus 200) := true
+  (validate-status 200) := true
   "TC2: Invalid token send"
-  (validateStatus 401) := false
+  (validate-status 401) := false
   "TC3: Invalid no token send"
-  (validateStatus 400) := false)
+  (validate-status 400) := false)
 
 (def axios-instance
   (axios/create
     #js
       {:maxContentLength (* 50 1000 1000)
-       :validateStatus (fn [status] (validateStatus status) )
+       :validateStatus (fn [status] (validate-status status) )
        :maxRedirects 0
        :httpsAgent https-agent}))
 
