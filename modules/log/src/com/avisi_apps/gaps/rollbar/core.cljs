@@ -17,7 +17,7 @@
 (tests
   "TC5: Error is of type ExceptionInfo"
   (cljs-error? (ex-info "Test error" {:test "true"})) := true
-  "TC6: Error not is of type ExceptionInfo, it is a javascript error"
+  "TC6: Error not of type ExceptionInfo, it is a javascript error"
   (cljs-error? (js/Error. "Test error")) := false)
 
 (defn parse-error-stack [payload]
