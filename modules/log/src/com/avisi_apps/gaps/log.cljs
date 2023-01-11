@@ -13,7 +13,7 @@
 ;; You can override this name by using closure defines.
 ;; For more information see: https://shadow-cljs.github.io/docs/UsersGuide.html#closure-defines
 (goog-define LOGGER_NAME "avisi-apps-logger")
-
+(goog-define VERSION "dev")
 
 (def kw->log-severity
   {:debug "DEBUG"
@@ -49,7 +49,7 @@
       "CRITICAL" (.fatal ^js logger* js-payload msg)
       "ALERT" (.fatal ^js logger* js-payload msg)
       "EMERGENCY" (.fatal ^js logger* js-payload msg))
-      (rollbar/log-additional-information severity message)))
+    (rollbar/log-additional-information VERSION severity payload)))
 
 (defn request->log [{:keys [request-method original-url protocol] :as args}]
   (when (seq args)

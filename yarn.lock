@@ -757,8 +757,10 @@ __metadata:
   resolution: "avisi-apps-gaps-log@workspace:modules/log"
   dependencies:
     axios: 0.24.0
+    error-stack-parser: 2.0.4
     pino: 8.5.0
     shadow-cljs: 2.19.8
+    stackframe: 1.1.0
   languageName: unknown
   linkType: soft
 
@@ -1449,6 +1451,7 @@ __metadata:
   dependencies:
     axios: 0.24.0
     cookie-parser: 1.4.6
+    error-stack-parser: 2.0.4
     express: 4.18.1
     negotiator: 0.6.3
     pino: 8.5.0
@@ -1457,6 +1460,7 @@ __metadata:
     react-dom: 18.2.0
     shadow-cljs: 2.20.1
     source-map-support: 0.5.21
+    stackframe: 1.1.0
     ws: 8.8.1
   languageName: unknown
   linkType: soft
@@ -2214,6 +2218,15 @@ __metadata:
   version: 2.0.3
   resolution: "err-code@npm:2.0.3"
   checksum: 8b7b1be20d2de12d2255c0bc2ca638b7af5171142693299416e6a9339bd7d88fc8d7707d913d78e0993176005405a236b066b45666b27b797252c771156ace54
+  languageName: node
+  linkType: hard
+
+"error-stack-parser@npm:2.0.4":
+  version: 2.0.4
+  resolution: "error-stack-parser@npm:2.0.4"
+  dependencies:
+    stackframe: ^1.1.0
+  checksum: 949817b007f477cfe8b4928b505b8762ad88bf657f4c2e70ac6987a22200b31ad1d35e4f15a5e84a9a9792c71f73140946ae4ede676ec4e7f7be5e8a1d97c0b4
   languageName: node
   linkType: hard
 
@@ -6255,6 +6268,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stackframe@npm:1.1.0":
+  version: 1.1.0
+  resolution: "stackframe@npm:1.1.0"
+  checksum: de89baf728cfe0782181fe8e6e7b4625ec76f408f55c19592941e3a70c2508e89fde133bcf5f8da468fbf286023990891b02860ae6f69124f851c6dcaa6c7ff3
+  languageName: node
+  linkType: hard
+
+"stackframe@npm:^1.1.0":
+  version: 1.3.4
+  resolution: "stackframe@npm:1.3.4"
+  checksum: bae1596873595c4610993fa84f86a3387d67586401c1816ea048c0196800c0646c4d2da98c2ee80557fd9eff05877efe33b91ba6cd052658ed96ddc85d19067d
+  languageName: node
+  linkType: hard
+
 "statuses@npm:2.0.1":
   version: 2.0.1
   resolution: "statuses@npm:2.0.1"
@@ -6511,6 +6538,7 @@ __metadata:
     avisi-apps-gaps-log: "workspace:*"
     axios: 0.24.0
     cookie-parser: 1.4.6
+    error-stack-parser: 2.0.4
     express: 4.18.1
     negotiator: 0.6.3
     pino: 8.5.0
@@ -6519,6 +6547,7 @@ __metadata:
     react-dom: 18.2.0
     shadow-cljs: 2.20.1
     source-map-support: 0.5.21
+    stackframe: 1.1.0
     ws: 8.8.1
   languageName: unknown
   linkType: soft

@@ -12,11 +12,11 @@
 (defonce app (app/fulcro-app))
 
 (defn generate-exception
-  "Creates and throws an error, sends it to the logging library."
+  "Creates and throws an error, sends it to the logging service."
   []
   (try
     (throw
-      (ex-info "test error 5" {:works "nope"}))
+      (ex-info "test error 25" {:value "value1" :foo "bar"}))
     (catch ExceptionInfo e
       (log/error e (ex-data e)))))
 

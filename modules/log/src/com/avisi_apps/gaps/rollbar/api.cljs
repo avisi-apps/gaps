@@ -35,20 +35,45 @@
        :maxRedirects 0
        :httpsAgent https-agent}))
 
-(defn send-to-rollbar [configuration severity message]
+(defn build-rollbar-header [configuration]
+  (clj->js {:Content-Type "application/json"
+            :X-Rollbar-Access-Token (get configuration :log/token)}))
+
+(def rollbar-url "https://api.rollbar.com/api/1/item/")
+
+(defn send-message-to-rollbar [configuration notifier severity message]
 (p/let [response (->
     (.request
       ^js axios-instance
       #js
       {:method "post"
-       :url "https://api.rollbar.com/api/1/item/"
-       :headers (clj->js {:Content-Type "application/json"
-                          :X-Rollbar-Access-Token      (get configuration :log/token)})
+       :url rollbar-url
+       :headers (build-rollbar-header configuration)
        :data (clj->js {:data {
                        :environment "production"
+                       :notifier notifier
                        :body {
-                              :message {
-                                        :level (str/lower-case severity)
+                              :message {:level (str/lower-case severity)
                                         :body  message}}
                        :level (str/lower-case severity)}})})
+    (p/then bean))] response))
+
+(defn send-exception-to-rollbar [configuration notifier client severity payload frames]
+  (p/let [response (->
+    (.request
+    ^js axios-instance
+    #js
+    {:method "post"
+    :url rollbar-url
+    :headers (build-rollbar-header configuration)
+    :data (clj->js
+            {:data {
+      :environment "production"
+      :notifier notifier
+      :body {
+        :trace {
+          :frames frames
+          :exception {:class (str "\n Message: " (:err payload))}}}
+      :client client
+      :level (str/lower-case severity)}})})
     (p/then bean))] response))
