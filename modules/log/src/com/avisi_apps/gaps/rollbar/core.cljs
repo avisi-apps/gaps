@@ -2,17 +2,23 @@
   (:require
     ["error-stack-parser" :as error-stack-parser]
     [hyperfiddle.rcf :refer [tests]]
+    [com.fulcrologic.fulcro.application :as app]
     [com.avisi-apps.gaps.rollbar.api :as api]
     [com.avisi-apps.gaps.rollbar.config :as config]))
+
+
+(defn check-permission? [configuration]
+  (let [state (app/current-state (:app configuration))]
+  (get-in state [:error-tracking :track-error?])))
 
 (defn cljs-error? [e]
   (instance? ExceptionInfo e))
 
 (tests
   "TC5: Error is of type ExceptionInfo"
-  (instance? ExceptionInfo (ex-info "Test error" {:test "true"})) := true
+  (cljs-error? (ex-info "Test error" {:test "true"})) := true
   "TC6: Error not is of type ExceptionInfo, it is a javascript error"
-  (instance? ExceptionInfo (js/Error. "Test error")) := false)
+  (cljs-error? (js/Error. "Test error")) := false)
 
 (defn parse-error-stack [payload]
  (let [parsed-stack
@@ -60,7 +66,7 @@
 
 (defn log-additional-information [version severity payload]
   (let [configuration (config/get-rollbar-config)]
-    (when (validate-rollbar-config? configuration)
+    (when (and (validate-rollbar-config? configuration) (check-permission? configuration))
       (if (= severity "ERROR")
         (api/send-exception-to-rollbar configuration (build-notifier version) (build-client version) severity payload (build-frames-for-exception (parse-error-stack payload)))
         (api/send-message-to-rollbar configuration (build-notifier version) severity (:message payload))))))
