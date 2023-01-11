@@ -4,11 +4,9 @@
  :builds {:web {:target :browser
                 :output-dir "resources/public/js"
                 :asset-path "/js"
-                :compiler-options {
-                                   :source-map true
+                :compiler-options {:source-map true
                                    :source-map-include-sources-content true
-                                   :source-map-detail-level :all
-                                   }
+                                   :source-map-detail-level :all}
                 :js-options {:resolve {"dtrace-provider" {:target :global
                                                           :global "dtrace-provider"}}}
                 :devtools {:after-load com.avisi-apps.cloud-run-example.client/refresh

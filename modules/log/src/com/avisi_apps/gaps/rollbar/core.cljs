@@ -26,19 +26,19 @@
   [stack
    (mapv
      (fn [stack]
-       {:filename (.getFileName stack )
+       {:filename (.getFileName stack)
         :lineno (.getLineNumber stack)
         :colno (.getColumnNumber stack)
         :method (.getFunctionName stack)})
      stack-frames)]
   stack))
 
-(defn build-notifier [VERSION]
-  (let [notifier {:name "Gaps/log" :version VERSION} ]
+(defn build-notifier [version]
+  (let [notifier {:name "Gaps/log" :version version} ]
     notifier))
 
-(defn build-client [VERSION]
-  (let [client {:javascript {:code_version VERSION
+(defn build-client [version]
+  (let [client {:javascript {:code_version version
                              :source_map_enable true
                              :guess_uncaught_frames false}}]
     client))
@@ -58,9 +58,9 @@
   "TC4: Should be invalid config, the map is empty"
   (validate-rollbar-config? {}) := false)
 
-(defn log-additional-information [VERSION severity payload]
+(defn log-additional-information [version severity payload]
   (let [configuration (config/get-rollbar-config)]
     (when (validate-rollbar-config? configuration)
       (if (= severity "ERROR")
-        (api/send-exception-to-rollbar configuration (build-notifier VERSION) (build-client VERSION) severity payload (build-frames-for-exception (parse-error-stack payload)))
-        (api/send-message-to-rollbar configuration (build-notifier VERSION) severity (:message payload))))))
+        (api/send-exception-to-rollbar configuration (build-notifier version) (build-client version) severity payload (build-frames-for-exception (parse-error-stack payload)))
+        (api/send-message-to-rollbar configuration (build-notifier version) severity (:message payload))))))

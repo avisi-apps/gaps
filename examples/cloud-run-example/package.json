@@ -9,7 +9,8 @@
     "negotiator": "0.6.3",
     "pino": "8.5.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "stackframe": "1.1.0"
   },
   "devDependencies": {
     "pino-pretty": "9.1.0",
