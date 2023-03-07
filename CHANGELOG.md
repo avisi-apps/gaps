@@ -67,7 +67,8 @@ Broken release. Do not use.
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.58...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.61...HEAD
+[0.0.61]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.61
 [0.0.58]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.58
 [0.0.54]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.54
 [0.0.48]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.48
