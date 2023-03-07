@@ -72,7 +72,8 @@
         {:err exception
          :exception-message (ex-message exception)
          :exception-data (ex-data exception)})
-      request (assoc :httpRequest (request->log request))
+      ;; Request might be a Javascript object
+      request (assoc :httpRequest (request->log (bean request)))
       response (assoc :response response)
       stack (update :message (fn [message] (str message "\n Error:\n" stack))))))
 
