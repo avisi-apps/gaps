@@ -1,0 +1,11 @@
+{
+  "name": "avisi-apps-gaps-rollbar",
+  "version": "1.0.0",
+  "dependencies": {
+    "@rollbar/react": "0.11.1",
+    "rollbar": "2.26.1"
+  },
+  "devDependencies": {
+    "shadow-cljs": "2.19.8"
+  }
+}
