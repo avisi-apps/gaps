@@ -19,3 +19,6 @@ Helpers for working a remote that is hosted on google with fulcro [fulcro-google
 ## [reitit-express](modules/reitit-express/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/reitit-express.svg)](https://clojars.org/com.avisi-apps.gaps/reitit-express)
 Library to use reitit with clojurescript with [Express](http://expressjs.com). This makes it possibble to use reitit easily
 for Google Cloud functions or Google Cloud run with minimal differences.
+
+## [rollbar](modules/rollbar/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/rollbar.svg)](https://clojars.org/com.avisi-apps.gaps/rollbar)
+Library to use Rollbar within a clojurescript Fulcro project. This makes it possible to log React and Fulcro errors.

@@ -3,7 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [v0.0.59]
+## [Unreleased]
+### Added
+- New Rollbar module
+
+### Changed
+- Pino logger now instantiated by `defonce` instead of `def`
+
+### Fixed
+
+## [v0.0.61]
 ### Added
 
 ### Changed

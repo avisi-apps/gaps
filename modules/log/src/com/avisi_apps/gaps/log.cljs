@@ -13,7 +13,6 @@
 ;; For more information see: https://shadow-cljs.github.io/docs/UsersGuide.html#closure-defines
 (goog-define LOGGER_NAME "avisi-apps-logger")
 
-
 (def kw->log-severity
   {:debug "DEBUG"
    :info "INFO"
@@ -26,8 +25,7 @@
 
 (def severity->kw (set/map-invert kw->log-severity))
 
-
-(def logger
+(defonce logger
   (pino.
     #js{:name LOGGER_NAME
         :level (if ^boolean goog/DEBUG "debug" "info")}))
