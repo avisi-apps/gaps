@@ -6,7 +6,8 @@
                               com.avisi-apps.gaps/rcf {:local/root "modules/rcf"}
                               com.avisi-apps.gaps/reitit-express {:local/root "modules/reitit-express"}
                               com.avisi-apps.gaps/fulcro-google-remote {:local/root "modules/fulcro-google-remote"}
-                              com.avisi-apps.gaps/rollbar {:local/root "modules/rollbar"}}}
+                              com.avisi-apps.gaps/rollbar {:local/root "modules/rollbar"}
+                              com.avisi-apps.gaps/brevo {:local/root "modules/brevo"}}}
            :build {:deps {io.github.seancorfield/build-clj {:git/tag "v0.8.3" :git/sha "7ac1f8d"}
                           clj-commons/clj-yaml {:mvn/version "0.7.108"}}
                    :ns-default build}}}

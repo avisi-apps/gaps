@@ -1,0 +1,11 @@
+{
+  "name": "avisi-apps-gaps-brevo",
+  "version": "1.0.0",
+  "dependencies": {
+    "agentkeepalive": "^4.1.4",
+    "axios": "0.21.2"
+  },
+  "devDependencies": {
+    "shadow-cljs": "2.19.8"
+  }
+}
