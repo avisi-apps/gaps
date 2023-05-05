@@ -3,6 +3,7 @@
   (:require
     ["pino" :as pino]
     [cljs-bean.core :refer [->js bean]]
+    [goog.object :as gobj]
     [hyperfiddle.rcf :refer [tests]]
     [clojure.string :as str]
     [clojure.set :as set]))
@@ -26,6 +27,13 @@
 (def severity->kw (set/map-invert kw->log-severity))
 
 (defonce ^{:dynamic true} *logger-config* {:name LOGGER_NAME
+                                           :serializers {:err
+                                                         (.wrapErrorSerializer
+                                                           ^js (.-stdSerializers ^js pino)
+                                                           (fn [serialized]
+                                                             (when-let [data (gobj/get serialized "data")]
+                                                               (gobj/set serialized "data" (clj->js data)))
+                                                             serialized))}
                                            :messageKey "message"
                                            :level (if ^boolean goog/DEBUG "debug" "info")})
 
@@ -69,17 +77,14 @@
                           :request-method :get})) := {"requestMethod" "GET", "requestUrl" "/foo/bar", "protocol" nil})
 
 (defn add-error-data [data exception]
-  (let [{:keys [stack request response]} (bean exception)]
+  (let [{:keys [request response]} (bean exception)]
     (cond->
-      (merge
+      (assoc
         data
-        {:err exception
-         :exception-message (ex-message exception)
-         :exception-data (ex-data exception)})
+        :err exception)
       ;; Request might be a Javascript object
       request (assoc :httpRequest (request->log (bean request)))
-      response (assoc :response response)
-      stack (update :message (fn [message] (str message "\n Error:\n" stack))))))
+      response (assoc :response response))))
 
 (defn log [{:keys [level data line ns file]}]
   (log!

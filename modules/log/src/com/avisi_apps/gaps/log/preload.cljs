@@ -1,6 +1,5 @@
 (ns com.avisi-apps.gaps.log.preload
   (:require ["pino-pretty"]
-            ["pino" :as pino]
             [com.avisi-apps.gaps.log :as log]))
 
 (log/update-log-config! (fn [current-config]
