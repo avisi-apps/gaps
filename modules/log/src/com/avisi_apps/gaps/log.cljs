@@ -25,16 +25,22 @@
 
 (def severity->kw (set/map-invert kw->log-severity))
 
-(defonce logger
-  (pino.
-    #js{:name LOGGER_NAME
-        :level (if ^boolean goog/DEBUG "debug" "info")}))
+(defonce ^{:dynamic true} *logger-config* {:name LOGGER_NAME
+                                           :messageKey "message"
+                                           :level (if ^boolean goog/DEBUG "debug" "info")})
+
+(defonce ^{:dynamic true} *logger* (pino. (clj->js *logger-config*)))
+
+(defn update-log-config! [update-fn]
+  (let [updated-config (update-fn *logger-config*)]
+    (set! *logger-config* updated-config)
+    (set! *logger* (pino. (clj->js updated-config)))))
 
 (defn log!
   [{:keys [severity message]
     :as payload}]
-  (let [logger* logger
-        js-payload (->js payload)
+  (let [logger* *logger*
+        js-payload (->js (dissoc payload :message))
         msg (or message "No message")]
     ;; Based on https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
     (case severity

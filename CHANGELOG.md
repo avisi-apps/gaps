@@ -5,8 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- Added a log preload which enables pretty printing with `pino-pretty`
+- Added a run configuration for the cloud run example
 
 ### Changed
+- The log module now only uses the `:message` key in the json logging object we used to also write the message to  a `:msg`
+  key to make it compatible with pino but we now fixed it by configuring the correct key. This saves us logging every 
+  message twice.
 
 ### Fixed
 

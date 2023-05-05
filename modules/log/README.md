@@ -36,8 +36,14 @@ See the below example for usage examples:
 ```
 
 ## Pro tip
-If you want to make the output of logging more readable you can use `pino-pretty`. For example
+If you want to make the output of logging more readable you can use `pino-pretty`. You can enable this by adding it as
+a preload in your shadow-cljs.edn
 
 ```shell
-yarn node index.js | yarn pino-pretty
+{:devtools {:preloads [com.avisi-apps.gaps.log.preload]}}
+```
+
+Make sure to save the pino-pretty module as a dev dependency:
+```
+yarn add --dev --exact pino-pretty
 ```
