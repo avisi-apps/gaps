@@ -3,6 +3,7 @@
   (:require
     ["pino" :as pino]
     [cljs-bean.core :refer [->js bean]]
+    [goog.object :as gobj]
     [hyperfiddle.rcf :refer [tests]]
     [clojure.string :as str]
     [clojure.set :as set]))
@@ -25,16 +26,29 @@
 
 (def severity->kw (set/map-invert kw->log-severity))
 
-(defonce logger
-  (pino.
-    #js{:name LOGGER_NAME
-        :level (if ^boolean goog/DEBUG "debug" "info")}))
+(defonce ^{:dynamic true} *logger-config* {:name LOGGER_NAME
+                                           :serializers {:err
+                                                         (.wrapErrorSerializer
+                                                           ^js (.-stdSerializers ^js pino)
+                                                           (fn [serialized]
+                                                             (when-let [data (gobj/get serialized "data")]
+                                                               (gobj/set serialized "data" (clj->js data)))
+                                                             serialized))}
+                                           :messageKey "message"
+                                           :level (if ^boolean goog/DEBUG "debug" "info")})
+
+(defonce ^{:dynamic true} *logger* (pino. (clj->js *logger-config*)))
+
+(defn update-log-config! [update-fn]
+  (let [updated-config (update-fn *logger-config*)]
+    (set! *logger-config* updated-config)
+    (set! *logger* (pino. (clj->js updated-config)))))
 
 (defn log!
   [{:keys [severity message]
     :as payload}]
-  (let [logger* logger
-        js-payload (->js payload)
+  (let [logger* *logger*
+        js-payload (->js (dissoc payload :message))
         msg (or message "No message")]
     ;; Based on https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
     (case severity
@@ -63,17 +77,14 @@
                           :request-method :get})) := {"requestMethod" "GET", "requestUrl" "/foo/bar", "protocol" nil})
 
 (defn add-error-data [data exception]
-  (let [{:keys [stack request response]} (bean exception)]
+  (let [{:keys [request response]} (bean exception)]
     (cond->
-      (merge
+      (assoc
         data
-        {:err exception
-         :exception-message (ex-message exception)
-         :exception-data (ex-data exception)})
+        :err exception)
       ;; Request might be a Javascript object
       request (assoc :httpRequest (request->log (bean request)))
-      response (assoc :response response)
-      stack (update :message (fn [message] (str message "\n Error:\n" stack))))))
+      response (assoc :response response))))
 
 (defn log [{:keys [level data line ns file]}]
   (log!

@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="cloud-run-example REPL" type="ClojureREPL" factoryName="Remote" activateToolWindowBeforeRun="false">
+    <module name="cloud-run-example" />
+    <setting name="displayName" value="cloud-run-example REPL" />
+    <setting name="host" value="" />
+    <setting name="port" value="0" />
+    <setting name="replType" value="NREPL" />
+    <setting name="configType" value="PORT_FILE" />
+    <setting name="replPortFileType" value="STANDARD" />
+    <setting name="customPortFile" value="" />
+    <setting name="fixLineNumbers" value="false" />
+    <setting name="focusEditor" value="false" />
+    <method v="2" />
+  </configuration>
+</component>
