@@ -6,7 +6,7 @@
     [cljs-bean.core :refer [bean]]
     [clojure.string :as str]
     [com.fulcrologic.fulcro.algorithms.react-interop :as react-interop]
-    [com.fulcrologic.fulcro.components :refer [defsc] :as comp]
+    [com.fulcrologic.fulcro.components :as comp]
     [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]))
 
 ;;
@@ -42,15 +42,6 @@
                            (fn [_] "An error has occurred. Try reloading the page."))]
       (fallback-ui-fn (bean js-obj)))))
 
-;; From: com.fulcrologic.fulcro.react.error-boundaries
-(defsc BodyContainer
-  [_ {:keys [parent render]}]
-  {:use-hooks? true}
-  (comp/with-parent-context parent
-    (render)))
-
-(def ui-body-container (comp/factory BodyContainer))
-
 (def ^:private ui-error-boundary (react-interop/react-factory ErrorBoundary))
 
 (defn error-boundary*
@@ -60,7 +51,8 @@
     {:level (or level error)
      :errorMessage error-message
      :fallbackUI (fallback-ui-wrapper fallback-ui-fn)}
-    (ui-body-container {:parent parent :render render})))
+    (comp/with-parent-context parent
+      (render))))
 
 (def provider (react-interop/react-factory Provider))
 

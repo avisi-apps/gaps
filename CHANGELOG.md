@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 ### Fixed
+- Fix namespaced classes not working as direct children in error boundary be removing redundant BodyContainer
 
 ## [v0.0.71]
 ### Added
