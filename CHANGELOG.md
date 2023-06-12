@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 ### Fixed
+- Fix namespaced classes not working as direct children in error boundary by explicitly binding comp/*parent* 
+  to the parent retrieved from the error-boundary macro
 
 ## [v0.0.71]
 ### Added

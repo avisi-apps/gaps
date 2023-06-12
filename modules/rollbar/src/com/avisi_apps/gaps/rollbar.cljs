@@ -46,8 +46,8 @@
 (defsc BodyContainer
   [_ {:keys [parent render]}]
   {:use-hooks? true}
-  (comp/with-parent-context parent
-    (render)))
+  (binding [comp/*parent* parent]
+    (render parent)))
 
 (def ui-body-container (comp/factory BodyContainer))
 
