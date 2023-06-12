@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 ### Fixed
+
+## [v0.0.74]
+### Added
+
+### Changed
+
+### Fixed
 - Fix namespaced classes not working as direct children in error boundary by explicitly binding comp/*parent* 
   to the parent retrieved from the error-boundary macro
 
@@ -107,7 +114,8 @@ Broken release. Do not use.
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.71...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.74...HEAD
+[0.0.74]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.74
 [0.0.71]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.71
 [0.0.67]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.67
 [0.0.64]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.64
