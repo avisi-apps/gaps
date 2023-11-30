@@ -41,6 +41,8 @@
 (def status-inactive "INACTIVE")
 (def status-other "OTHER")
 
+(def monday-monetization-enabled-field "MONDAY_MONETIZATION_ENABLED")
+
 (defn create-app-attribute-string
   "Transforms clojure map into a string value for the app specific attribute
    {A 1, B 2} -> A:1__B:2"
