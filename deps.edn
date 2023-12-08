@@ -11,6 +11,10 @@
                               com.avisi-apps.gaps/google-cloud {:local/root "modules/google-cloud"}
                               com.avisi-apps.gaps/data-residency-migrations {:local/root "modules/data-residency-migrations"}
                               com.avisi-apps.gaps/brevo {:local/root "modules/brevo"}}}
+           :lint {:extra-deps {avisi-apps/fmt {:git/url "git@github.com:avisi-apps/fmt"
+                                               :sha "005c6d06c98fd4d640e4d67dac8baa3b51cb2d85"}}
+                  :main-opts ["-m" "avisi-apps.fmt.main" "check"]}
+           :fix {:main-opts ["-m" "avisi-apps.fmt.main" "fix"]}
            :build {:deps {io.github.seancorfield/build-clj {:git/tag "v0.8.3" :git/sha "7ac1f8d"}
                           clj-commons/clj-yaml {:mvn/version "0.7.108"}}
                    :ns-default build}}}

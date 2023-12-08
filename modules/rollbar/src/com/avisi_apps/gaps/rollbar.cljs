@@ -15,13 +15,10 @@
 (defonce config (atom nil))
 (defn set-config! [m] (reset! config m))
 
-(defn notifier
-  "Creates a new Rollbar notifier using existing config.
+(defn notifier "Creates a new Rollbar notifier using existing config.
   Can be merged with configurations in `m`"
   ([] (notifier {}))
-  ([m]
-   (when-let [c @config]
-     (new ^js Rollbar (clj->js (merge c m))))))
+  ([m] (when-let [c @config] (new ^js Rollbar (clj->js (merge c m))))))
 
 ;;
 ;; Rollbar error levels
@@ -37,44 +34,38 @@
 ;;
 (defn fallback-ui-wrapper [fallback-ui-fn]
   (fn [^js js-obj]
-    (let [fallback-ui-fn (or
-                           (and (fn? fallback-ui-fn) fallback-ui-fn)
-                           (fn [_] "An error has occurred. Try reloading the page."))]
+    (let [fallback-ui-fn
+            (or (and (fn? fallback-ui-fn) fallback-ui-fn) (fn [_] "An error has occurred. Try reloading the page."))]
       (fallback-ui-fn (bean js-obj)))))
 
 ;; From: com.fulcrologic.fulcro.react.error-boundaries
-(defsc BodyContainer
-  [_ {:keys [parent render]}]
-  {:use-hooks? true}
-  (binding [comp/*parent* parent]
-    (render parent)))
+(defsc BodyContainer [_ {:keys [parent render]}] {:use-hooks? true} (binding [comp/*parent* parent] (render parent)))
 
 (def ui-body-container (comp/factory BodyContainer))
 
 (def ^:private ui-error-boundary (react-interop/react-factory ErrorBoundary))
 
-(defn error-boundary*
-  "Use the error-boundary macro instead"
+(defn error-boundary* "Use the error-boundary macro instead"
   [{:keys [level error-message parent render fallback-ui-fn]}]
   (ui-error-boundary
     {:level (or level error)
      :errorMessage error-message
      :fallbackUI (fallback-ui-wrapper fallback-ui-fn)}
-    (ui-body-container {:parent parent :render render})))
+    (ui-body-container
+      {:parent parent
+       :render render})))
 
 (def provider (react-interop/react-factory Provider))
 
 ;;
 ;; Utilities
 ;;
-(defn with-transformers
-  "Composes the functions `t` from right to left and assigns that to the Rollbar config"
-  [c & t] (assoc c :transform (apply comp t)))
+(defn with-transformers "Composes the functions `t` from right to left and assigns that to the Rollbar config"
+  [c & t]
+  (assoc c :transform (apply comp t)))
 
 (defn fulcro-route-to-context-transformer
   "Given an app atom, returns a composable Rollbar transformer
   that sets the current route as the context"
   [app]
-  (fn [^js payload]
-    (set! (.-context payload) (str/join "/" (dr/current-route @app)))
-    payload))
+  (fn [^js payload] (set! (.-context payload) (str/join "/" (dr/current-route @app))) payload))

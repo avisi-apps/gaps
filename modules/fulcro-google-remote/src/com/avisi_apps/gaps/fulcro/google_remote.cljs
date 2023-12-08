@@ -23,29 +23,29 @@
   [fulcro-remote]
   (let [{:keys [transmit!]} fulcro-remote]
     (assoc fulcro-remote
-           :transmit!
-           (fn retry-transmit! [this send-node]
-             #_{:clj-kondo/ignore [:loop-without-recur]}
-             (p/loop [tries-left amount-of-retry-attempts]
-               (->
-                 (p/create
-                   (fn [resolve reject]
-                     (transmit!
-                       this
-                       (->
-                         send-node
-                         (update
-                           ::txn/result-handler
-                           (fn [default-result-handler]
-                             (fn [result]
-                               (if (and (temporarily-unavailable? result) (not (last-attempt? tries-left)))
-                                 (reject :resolvable)
-                                 (resolve (default-result-handler result))))))))))
-                 (p/catch
-                   (fn [e]
-                     (if (= e :resolvable)
-                       (p/do!
-                         (js/console.warn (str "Trying again in one second, attempts left " (dec tries-left)))
-                         (p/delay 1000)
-                         (p/recur (dec tries-left)))
-                       (js/console.error "Unexpected error in remote" e))))))))))
+      :transmit!
+        (fn retry-transmit! [this send-node]
+          #_{:clj-kondo/ignore [:loop-without-recur]}
+          (p/loop [tries-left amount-of-retry-attempts]
+            (->
+              (p/create
+                (fn [resolve reject]
+                  (transmit!
+                    this
+                    (->
+                      send-node
+                      (update
+                        ::txn/result-handler
+                        (fn [default-result-handler]
+                          (fn [result]
+                            (if (and (temporarily-unavailable? result) (not (last-attempt? tries-left)))
+                              (reject :resolvable)
+                              (resolve (default-result-handler result))))))))))
+              (p/catch
+                (fn [e]
+                  (if (= e :resolvable)
+                    (p/do!
+                      (js/console.warn (str "Trying again in one second, attempts left " (dec tries-left)))
+                      (p/delay 1000)
+                      (p/recur (dec tries-left)))
+                    (js/console.error "Unexpected error in remote" e))))))))))

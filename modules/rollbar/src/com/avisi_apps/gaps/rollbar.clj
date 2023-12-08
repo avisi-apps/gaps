@@ -1,5 +1,6 @@
 (ns com.avisi-apps.gaps.rollbar
-  (:require [com.fulcrologic.fulcro.components :as comp]))
+  (:require
+    [com.fulcrologic.fulcro.components :as comp]))
 
 (defmacro error-boundary
   "Fulcro wrapper macro for Rollbar's Error Boundary

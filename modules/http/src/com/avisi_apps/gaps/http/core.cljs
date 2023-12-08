@@ -10,22 +10,22 @@
 (def ^:private https-agent
   (HttpsAgent.
     #js
-            {:keepAlive true
-             :maxSockets 100
-             :maxFreeSockets 10
-             ;; 60 seconds timeout
-             :timeout 60000
-             ;; Free socket timout 30 seconds
-             :freeSocketTimeout 30000}))
+     {:keepAlive true
+      :maxSockets 100
+      :maxFreeSockets 10
+      ;; 60 seconds timeout
+      :timeout 60000
+      ;; Free socket timout 30 seconds
+      :freeSocketTimeout 30000}))
 
 (def ^:private axios-instance
   (axios/create
     #js
-            {;; cap the maximum content length we'll accept to 50MBs, just in case
-             :maxContentLength (* 50 1000 1000)
-             :validateStatus (fn [status] (and (>= status 200) (< status 400)))
-             :maxRedirects 0
-             :httpsAgent https-agent}))
+     {;; cap the maximum content length we'll accept to 50MBs, just in case
+      :maxContentLength (* 50 1000 1000)
+      :validateStatus (fn [status] (and (>= status 200) (< status 400)))
+      :maxRedirects 0
+      :httpsAgent https-agent}))
 
 (defn ^:private settings->url
   "
@@ -51,30 +51,30 @@
   "
   [{::keys [method body headers url base-url content-type auth query-params]
     :or
-    {method :get
-     content-type :json
-     url "/"
-     headers {}}}]
+      {method :get
+       content-type :json
+       url "/"
+       headers {}}}]
   (->
     (.request
       ^js axios-instance
       (cond->
         {:url
-         (settings->url
-           {::query-params query-params
-            ::url url})
+           (settings->url
+             {::query-params query-params
+              ::url url})
          :baseURL base-url
          :method (name method)
          :headers
-         (merge
-           (case content-type
-             :json {"Content-Type" "application/json"}
-             {})
-           headers)}
+           (merge
+             (case content-type
+               :json {"Content-Type" "application/json"}
+               {})
+             headers)}
         body (assoc :data body)
         auth
-        (assoc :auth
-               {:username (::username auth)
-                :password (::password auth)})
+          (assoc :auth
+            {:username (::username auth)
+             :password (::password auth)})
         :always ->js))
     (p/then ->clj)))

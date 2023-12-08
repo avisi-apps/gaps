@@ -38,40 +38,43 @@
       ; for now we don't perform any actions in the schedule phase
       #{"schedule"} nil
       #{"start"}
-      (let [source-project (get-project-id)
-            [app-name stage _] (->
-                                 source-project
-                                 (str/split #"-"))
-            destination-region-label (str/lower-case (:location migration-data))
-            destination-project (str/join "-" [app-name stage destination-region-label])]
-        (pubsub/publish-message!
-          migrations-topic
-          {:phase phase
-           :migration
-           {:tenant tenant
-            :source_project source-project
-            :destination_project destination-project}}))
+        (let [source-project (get-project-id)
+              [app-name stage _] (->
+                                   source-project
+                                   (str/split #"-"))
+              destination-region-label (str/lower-case (:location migration-data))
+              destination-project (str/join "-" [app-name stage destination-region-label])]
+          (pubsub/publish-message!
+            migrations-topic
+            {:phase phase
+             :migration
+               {:tenant tenant
+                :source_project source-project
+                :destination_project destination-project}}))
       #{"commit" "rollback"}
-      (p/let [token (->
-                      ^js (GoogleAuth.)
-                      (.getAccessToken))
-              callback-url (->
-                             tenant-ref
-                             (.get)
-                             (.data)
-                             ->clj
-                             :migrationCallback)]
-        (http/request
-          {::http/base-url callback-url
-           ::http/method "POST"
-           ::http/headers
-           {"Content-Type" "application/json"
-            "Authorization" (str "Bearer " token)}
-           ::http/body {:phase phase}})))))
+        (p/let [token (->
+                        ^js (GoogleAuth.)
+                        (.getAccessToken))
+                callback-url (->
+                               tenant-ref
+                               (.get)
+                               (.data)
+                               ->clj
+                               :migrationCallback)]
+          (http/request
+            {::http/base-url callback-url
+             ::http/method "POST"
+             ::http/headers
+               {"Content-Type" "application/json"
+                "Authorization" (str "Bearer " token)}
+             ::http/body {:phase phase}})))))
 
-(defn ^:private migration-handler [{:keys [installation]
-                                    {:keys [tenant-ref]} :dare-migration
-                                    :as request} respond _]
+(defn ^:private migration-handler
+  [{:keys [installation]
+    {:keys [tenant-ref]} :dare-migration
+    :as request}
+   respond
+   _]
   (let [phase (->
                 request
                 :path-params
@@ -92,8 +95,11 @@
         (respond {:status 200}))
       (p/catch (catch-migration-error respond installation)))))
 
-(defn ^:private get-migration-status [{:keys [installation]
-                                       {:keys [tenant-ref]} :dare-migration} respond _]
+(defn ^:private get-migration-status
+  [{:keys [installation]
+    {:keys [tenant-ref]} :dare-migration}
+   respond
+   _]
   (->
     (p/let [migration-status (p/->
                                tenant-ref
@@ -108,8 +114,7 @@
           (respond
             {:status 200
              :body {:status migration-status}}))))
-    (p/catch
-      (catch-migration-error respond installation))))
+    (p/catch (catch-migration-error respond installation))))
 
 (defn endpoints
   "
