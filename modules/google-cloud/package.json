@@ -1,0 +1,7 @@
+{
+  "name": "avisi-apps-gaps-google-cloud",
+  "packageManager": "yarn@3.2.2",
+  "dependencies": {
+    "@google-cloud/pubsub": "^4.0.7"
+  }
+}
