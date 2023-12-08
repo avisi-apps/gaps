@@ -9,6 +9,7 @@
                               com.avisi-apps.gaps/rollbar {:local/root "modules/rollbar"}
                               com.avisi-apps.gaps/http {:local/root "modules/http"}
                               com.avisi-apps.gaps/google-cloud {:local/root "modules/google-cloud"}
+                              com.avisi-apps.gaps/data-residency-migrations {:local/root "modules/data-residency-migrations"}
                               com.avisi-apps.gaps/brevo {:local/root "modules/brevo"}}}
            :build {:deps {io.github.seancorfield/build-clj {:git/tag "v0.8.3" :git/sha "7ac1f8d"}
                           clj-commons/clj-yaml {:mvn/version "0.7.108"}}

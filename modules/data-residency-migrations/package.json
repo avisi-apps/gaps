@@ -1,0 +1,7 @@
+{
+  "name": "avisi-apps-gaps-data-residency-migrations",
+  "packageManager": "yarn@3.2.2",
+  "dependencies": {
+    "google-auth-library": "^9.4.1"
+  }
+}
