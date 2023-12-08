@@ -1,0 +1,9 @@
+{
+  "name": "avisi-apps-gaps-http",
+  "packageManager": "yarn@3.2.2",
+  "dependencies": {
+    "agentkeepalive": "4.5.0",
+    "axios": "0.21.2",
+    "qs": "6.11.2"
+  }
+}
