@@ -1,4 +1,4 @@
-{:aliases {:cljs {:extra-deps {thheller/shadow-cljs {:mvn/version "2.19.8"}}}
+{:aliases {:cljs {:extra-deps {thheller/shadow-cljs {:mvn/version "2.26.2"}}}
            :log {:extra-deps {avisi-apps.gaps/log {:local/root "modules/log"}}}
            :test {:extra-paths ["test"]
                   :extra-deps {com.hyperfiddle/rcf {:mvn/version "20220405"}}}
