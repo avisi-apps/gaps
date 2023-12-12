@@ -1250,6 +1250,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"avisi-apps-gaps-data-residency-migrations@workspace:modules/data-residency-migrations":
+  version: 0.0.0-use.local
+  resolution: "avisi-apps-gaps-data-residency-migrations@workspace:modules/data-residency-migrations"
+  dependencies:
+    google-auth-library: ^9.4.1
+  languageName: unknown
+  linkType: soft
+
 "avisi-apps-gaps-google-cloud@workspace:modules/google-cloud":
   version: 0.0.0-use.local
   resolution: "avisi-apps-gaps-google-cloud@workspace:modules/google-cloud"
@@ -1263,7 +1271,7 @@ __metadata:
   resolution: "avisi-apps-gaps-http@workspace:modules/http"
   dependencies:
     agentkeepalive: 4.5.0
-    axios: 0.21.2
+    axios: 1.6.2
     qs: 6.11.2
   languageName: unknown
   linkType: soft
@@ -1318,6 +1326,17 @@ __metadata:
   dependencies:
     follow-redirects: ^1.14.0
   checksum: 41299c21f77323e7c56ea49d2d5ed25407d24bb145a4ce3441a8db17359ae56554f9495dca6e15d343a9530e106212a684c75a4db3bedfbe19f6414a8d94378e
+  languageName: node
+  linkType: hard
+
+"axios@npm:1.6.2":
+  version: 1.6.2
+  resolution: "axios@npm:1.6.2"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 4a7429e2b784be0f2902ca2680964391eae7236faa3967715f30ea45464b98ae3f1c6f631303b13dfe721b17126b01f486c7644b9ef276bfc63112db9fd379f8
   languageName: node
   linkType: hard
 
@@ -3412,6 +3431,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.15.0":
+  version: 1.15.3
+  resolution: "follow-redirects@npm:1.15.3"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: 584da22ec5420c837bd096559ebfb8fe69d82512d5585004e36a3b4a6ef6d5905780e0c74508c7b72f907d1fa2b7bd339e613859e9c304d0dc96af2027fd0231
+  languageName: node
+  linkType: hard
+
 "forever-agent@npm:~0.6.1":
   version: 0.6.1
   resolution: "forever-agent@npm:0.6.1"
@@ -3849,7 +3878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-auth-library@npm:^9.0.0":
+"google-auth-library@npm:^9.0.0, google-auth-library@npm:^9.4.1":
   version: 9.4.1
   resolution: "google-auth-library@npm:9.4.1"
   dependencies:
@@ -6474,7 +6503,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-from-env@npm:^1.0.0":
+"proxy-from-env@npm:^1.0.0, proxy-from-env@npm:^1.1.0":
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
