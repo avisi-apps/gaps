@@ -1,6 +1,6 @@
 # Data residency migrations
 
-Module for supporting data residency migrations.
+Module for supporting data residency migrations between project instances in different regions.
 
 Currently only for atlassian apps.
 

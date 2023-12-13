@@ -1,3 +1,3 @@
 # HTTP
 
-Module for sending http-request. See doc-strings for usage info.
+Module with helpers for sending http-request. See doc-strings for usage info.
