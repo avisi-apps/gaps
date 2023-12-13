@@ -55,7 +55,7 @@
         (p/let [token (->
                         ^js (GoogleAuth.)
                         (.getAccessToken))
-                callback-url (->
+                callback-url (p/->
                                tenant-ref
                                (.get)
                                (.data)
