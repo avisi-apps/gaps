@@ -23,7 +23,6 @@
     (format "%s.%s-SNAPSHOT" base-version (b/git-count-revs nil))))
 (println "Version = " version)
 
-
 (def modules-folder (b/resolve-path "modules"))
 
 (def current-branch (b/git-process {:git-args "branch --show-current"}))
@@ -41,12 +40,12 @@
 (defn sha
   [{:keys [dir path] :or {dir "."}}]
   (some-> {:command-args (cond-> ["git" "rev-parse" "HEAD"]
-                           path (conj "--" path))
+                                 path (conj "--" path))
            :dir (.getPath (b/resolve-path dir))
            :out :capture}
-    b/process
-    :out
-    str/trim))
+          b/process
+          :out
+          str/trim))
 
 (defn local-lib->mvn-lib [[k {:deps/keys [manifest] :as v}]]
   (if (= manifest :deps)
@@ -63,16 +62,31 @@
         module-sha (sha {})]
     (with-bindings {#'clojure.tools.build.api/*project-root* dir}
       (let [basis (-> (b/create-basis)
-                    (update :libs #(into {} (map local-lib->mvn-lib) %)))]
-        (-> opts
-          (assoc :version version
-                 :basis basis
-                 :scm {:tag (or current-tag  module-sha)
-                       :connection (str "scm:git:" scm-url)
-                       :developerConnection (str "scm:git:" scm-url)
-                       :url scm-url})
-          (bb/jar)
-          (bb/install))))))
+                      (update :libs #(into {} (map local-lib->mvn-lib) %)))
+            class-dir (bb/default-class-dir)
+            opts (assoc opts
+                   :version version
+                   :basis basis
+                   :class-dir class-dir
+                   :jar-file (bb/default-jar-file (bb/default-target) lib version)
+                   :scm {:tag (or current-tag module-sha)
+                         :connection (str "scm:git:" scm-url)
+                         :developerConnection (str "scm:git:" scm-url)
+                         :url scm-url}
+                   :pom-data [[:licenses
+                               [:license
+                                [:name "MIT License"]
+                                [:url "https://opensource.org/license/mit/"]]]])]
+        (println "\nWriting pom.xml...")
+        (b/write-pom opts)
+        (println "\nCopying files...")
+        (b/copy-dir {:src-dirs ["src" "resources"]
+                     :target-dir class-dir})
+        (println "\nBuilding jar...")
+        (b/jar opts)
+        (println "\nInstalling jar...")
+        (b/install opts)
+        opts))))
 
 (defn build [opts]
   (run!
@@ -87,17 +101,18 @@
   (run!
     (fn [module]
       (println "Cleaning module " module)
-      (bb/clean {:target (str (module-dir {:lib module}) "/target")})
+      (b/delete {:path (str (module-dir {:lib module}) "/target")})
       (println "Cleaned module " module))
     modules)
   opts)
 
 (defn release-module [{:keys [lib] :as opts}]
+  (println "Releasing module...")
   (with-bindings {#'clojure.tools.build.api/*project-root* (module-dir opts)}
     (->
       (assoc opts
-             :version version
-             :artifact (str (module-dir opts) "/" (bb/default-jar-file lib version)))
+        :version version
+        :artifact (str (module-dir opts) "/" (bb/default-jar-file lib version)))
       (bb/deploy))))
 
 (defn release [opts]
@@ -114,8 +129,8 @@
 (defn update-changelog! [new-version]
   (let [changelog (slurp "CHANGELOG.md")
         updated-changelog (-> changelog
-                            (str/replace "## [Unreleased]"
-                              (str "## [Unreleased]
+                              (str/replace "## [Unreleased]"
+                                           (str "## [Unreleased]
 ### Added
 
 ### Changed
@@ -123,15 +138,15 @@
 ### Fixed
 
 ## [" new-version "]"))
-                            (str/replace #"(?m)^\[Unreleased\]:.*"
-                              (str
-                                (format "[Unreleased]: https://github.com/avisi-apps/gaps/compare/%s...HEAD\n" new-version)
-                                (format "[%s]: https://github.com/avisi-apps/gaps/releases/tag/%s" (subs new-version 1) new-version))))]
+                              (str/replace #"(?m)^\[Unreleased\]:.*"
+                                           (str
+                                             (format "[Unreleased]: https://github.com/avisi-apps/gaps/compare/%s...HEAD\n" new-version)
+                                             (format "[%s]: https://github.com/avisi-apps/gaps/releases/tag/%s" (subs new-version 1) new-version))))]
     (spit "CHANGELOG.md" updated-changelog)))
 
 (defn generate-release-tag [_]
   (when (not= current-branch "master")
-    (throw (ex-info (format "You can only release from the master branch not: %s" current-branch) {:current-branch current-branch}))    )
+    (throw (ex-info (format "You can only release from the master branch not: %s" current-branch) {:current-branch current-branch})))
 
   (let [new-version (format "v%s.%s" base-version (b/git-count-revs nil))]
     (println (format "Updating changelog (moving everything from Unreleased to %s)" new-version))
@@ -149,7 +164,7 @@
       {:git-args (str "tag " new-version)})
     (println "Created new release tag: " new-version)
     (println "Pushing master and new release tag: " new-version)
-    (b/git-process {:git-args (str "push origin master" )})
+    (b/git-process {:git-args (str "push origin master")})
     (b/git-process {:git-args (str "push origin " new-version)})
     (println "Pushed new release tag: " new-version)))
 
@@ -180,8 +195,8 @@
 
 (defn generate-ci-config [opts]
   (let [changed-modules (into #{}
-                          (keep file-path->affected-module)
-                          (changed-files-from-release-branch))
+                              (keep file-path->affected-module)
+                              (changed-files-from-release-branch))
         _ (println "loading base config")
         base-config (->
                       (io/file ".circleci/continue-config.yml")
@@ -197,7 +212,7 @@
                                       changed-modules)]
     (println "Generate generated-config.yml")
     (spit (io/file "generated-config.yml")
-      (yaml/generate-string config-with-changed-modules :dumper-options {:flow-style :block}))))
+          (yaml/generate-string config-with-changed-modules :dumper-options {:flow-style :block}))))
 
 (comment
   (generate-ci-config {})
@@ -210,10 +225,10 @@
                      (slurp)
                      (yaml/parse-string)))
 
-  (assoc-in base-config [:workflows] )
+  (assoc-in base-config [:workflows])
 
 
-  (let [release-branch  "master"
+  (let [release-branch "master"
         current-branch (b/git-process {:git-args "branch --show-current"})]
     (when (not= release-branch current-branch)
       (->
@@ -221,15 +236,15 @@
         (str/split-lines))))
 
   (into #{}
-    (keep file-path->affected-module)
-    (changed-files-from-release-branch))
+        (keep file-path->affected-module)
+        (changed-files-from-release-branch))
 
   (build {})
 
-  (release-module {:lib 'avisi-apps/rcf})
+
+  (release-module {:lib 'com.avisi-apps.gaps/rcf})
 
 
   (build-module {:lib 'com.avisi-apps.gaps/log})
-
 
   )

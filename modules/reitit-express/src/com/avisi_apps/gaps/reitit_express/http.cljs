@@ -7,7 +7,8 @@
     [cljs-bean.core :refer [->js]]
     [clojure.string :as str]
     [cljs.spec.alpha :as s])
-  (:import [goog Uri]))
+  (:import
+    [goog Uri]))
 
 (defn- translate-cookie-opts
   "Copied from Macchiato so we don't have to change existing code"
@@ -24,9 +25,12 @@
       (when (some? http-only) {:httpOnly http-only})
       (when overwrite? {:overwrite overwrite?}))))
 
-(defn add-params [{:keys [form-params query-params] :as request
-                   :or {form-params {}
-                        query-params {}}}]
+(defn add-params
+  [{:keys [form-params query-params]
+    :as request
+    :or
+      {form-params {}
+       query-params {}}}]
   (assoc request :params (merge form-params query-params)))
 
 (defn express-request->ring-request
@@ -45,9 +49,23 @@
          :remote-addr (.-remoteAddress socket)
          :uri (.-path express-request)
          :original-url (.-originalUrl express-request)
-         :scheme (some-> (.-protocol express-request) str/lower-case keyword)
-         :request-method (some-> (.-method express-request) str/lower-case keyword)
-         :protocol (str (some-> (.-protocol express-request) str/upper-case) "/" (.-httpVersion express-request))
+         :scheme
+           (some->
+             (.-protocol express-request)
+             str/lower-case
+             keyword)
+         :request-method
+           (some->
+             (.-method express-request)
+             str/lower-case
+             keyword)
+         :protocol
+           (str
+             (some->
+               (.-protocol express-request)
+               str/upper-case)
+             "/"
+             (.-httpVersion express-request))
          :query-params (js->clj (.-query express-request))
          :headers (js->clj (.-headers express-request))}
         (.hasQuery parsed-uri) (assoc :query-string (.getQuery parsed-uri))
@@ -57,8 +75,10 @@
       {:node/request express-request})))
 
 (defn handle-unexpected-exception [error node-request node-response]
-  (log/error error {:message "Unexpected error"
-                    :req node-request})
+  (log/error
+    error
+    {:message "Unexpected error"
+     :req node-request})
   (->
     (.status node-response 500)
     (.set #js {"content-type" "text/plain"})
@@ -85,33 +105,32 @@
     (.use app (.raw ^js express #js {:type #js ["application/transit+json" "application/octet-stream"]}))
     (.use app (.text ^js express))
     (.use app (.urlencoded ^js express #js {:extended true}))
-    (run!
-      #(.use app (.static ^js express %))
-      static-dirs)
-    (.use app (fn reitit-express-middleware [node-request node-response _]
-                (->
-                  (p/do
-                    (let [request (express-request->ring-request node-request)]
-                      (http-handler request
-                        (fn respond [{:keys [cookies headers body status]}]
-                          (run! (fn [[k {:keys [value] :as opts}]]
-                                  (.cookie node-response (name k) value (translate-cookie-opts opts)))
-                            cookies)
-                          (->
-                            (.status node-response status)
-                            (.set (->js headers))
-                            (.send body)))
-                        (fn raise [error]
-                          (handle-unexpected-exception error node-request node-response)))))
-                  (p/catch (fn [e]
-                             (handle-unexpected-exception e node-request node-response))))))))
+    (run! #(.use app (.static ^js express %)) static-dirs)
+    (.use
+      app
+      (fn reitit-express-middleware [node-request node-response _]
+        (->
+          (p/do
+            (let [request (express-request->ring-request node-request)]
+              (http-handler
+                request
+                (fn respond [{:keys [cookies headers body status]}]
+                  (run!
+                    (fn
+                      [[k
+                        {:keys [value]
+                         :as opts}]]
+                      (.cookie node-response (name k) value (translate-cookie-opts opts)))
+                    cookies)
+                  (->
+                    (.status node-response status)
+                    (.set (->js headers))
+                    (.send body)))
+                (fn raise [error] (handle-unexpected-exception error node-request node-response)))))
+          (p/catch (fn [e] (handle-unexpected-exception e node-request node-response))))))))
 
-(defn listen!
-  "Start listening on a port, returns an instance of http.Server which can be closed"
+(defn listen! "Start listening on a port, returns an instance of http.Server which can be closed"
   [^js app port]
   (.listen app port))
 
-(defn close!
-  "Close a http.Server (the result from calling (listen! app 3000)"
-  [^js server cb]
-  (.close server cb))
+(defn close! "Close a http.Server (the result from calling (listen! app 3000)" [^js server cb] (.close server cb))

@@ -1,13 +1,22 @@
-{:aliases {:cljs {:extra-deps {thheller/shadow-cljs {:mvn/version "2.19.8"}}}
-           :log {:extra-deps {avisi-apps.gaps/log {:local/root "modules/log"}}}
-           :test {:extra-paths ["test"]
-                  :extra-deps {com.hyperfiddle/rcf {:mvn/version "20220405"}}}
-           :all {:extra-deps {com.avisi-apps.gaps/log {:local/root "modules/log"}
-                              com.avisi-apps.gaps/rcf {:local/root "modules/rcf"}
-                              com.avisi-apps.gaps/reitit-express {:local/root "modules/reitit-express"}
-                              com.avisi-apps.gaps/fulcro-google-remote {:local/root "modules/fulcro-google-remote"}
-                              com.avisi-apps.gaps/rollbar {:local/root "modules/rollbar"}
-                              com.avisi-apps.gaps/brevo {:local/root "modules/brevo"}}}
-           :build {:deps {io.github.seancorfield/build-clj {:git/tag "v0.8.3" :git/sha "7ac1f8d"}
-                          clj-commons/clj-yaml {:mvn/version "0.7.108"}}
-                   :ns-default build}}}
+{:aliases
+ {:cljs {:extra-deps {thheller/shadow-cljs {:mvn/version "2.26.2"}}}
+  :log {:extra-deps {avisi-apps.gaps/log {:local/root "modules/log"}}}
+  :test {:extra-paths ["test"]
+         :extra-deps {com.hyperfiddle/rcf {:mvn/version "20220405"}}}
+  :all {:extra-deps {com.avisi-apps.gaps/log {:local/root "modules/log"}
+                     com.avisi-apps.gaps/rcf {:local/root "modules/rcf"}
+                     com.avisi-apps.gaps/reitit-express {:local/root "modules/reitit-express"}
+                     com.avisi-apps.gaps/fulcro-google-remote {:local/root "modules/fulcro-google-remote"}
+                     com.avisi-apps.gaps/rollbar {:local/root "modules/rollbar"}
+                     com.avisi-apps.gaps/http {:local/root "modules/http"}
+                     com.avisi-apps.gaps/google-cloud {:local/root "modules/google-cloud"}
+                     com.avisi-apps.gaps/data-residency-migrations {:local/root "modules/data-residency-migrations"}
+                     com.avisi-apps.gaps/brevo {:local/root "modules/brevo"}}}
+  :lint {:extra-deps {avisi-apps/fmt {:git/url "git@github.com:avisi-apps/fmt"
+                                      :sha "005c6d06c98fd4d640e4d67dac8baa3b51cb2d85"}}
+         :main-opts ["-m" "avisi-apps.fmt.main" "check"]}
+  :fix {:main-opts ["-m" "avisi-apps.fmt.main" "fix"]}
+  :build {:deps {io.github.clojure/tools.build {:git/tag "v0.9.6" :git/sha "8e78bcc"}
+                 io.github.seancorfield/build-clj {:git/tag "v0.8.3" :git/sha "7ac1f8d"}
+                 clj-commons/clj-yaml {:mvn/version "0.7.108"}}
+          :ns-default build}}}

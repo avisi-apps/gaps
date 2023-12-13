@@ -1,11 +1,12 @@
 (ns com.avisi-apps.gaps.brevo.core
-  (:require [clojure.string :as str]
-            #?(:clj [clj-http.client :as http])
-            #?(:clj [jsonista.core :as json])
-            #?(:clj [clj-http.util :as http-util])
-            #?(:cljs [goog.string :as gstring])
-            #?(:cljs [promesa.core :as p])
-            #?(:cljs [com.avisi-apps.gaps.brevo.axios-client :as axios-client])))
+  (:require
+    [clojure.string :as str]
+    #?(:clj [clj-http.client :as http])
+    #?(:clj [jsonista.core :as json])
+    #?(:clj [clj-http.util :as http-util])
+    #?(:cljs [goog.string :as gstring])
+    #?(:cljs [promesa.core :as p])
+    #?(:cljs [com.avisi-apps.gaps.brevo.axios-client :as axios-client])))
 
 (def brevo-api-prefix "https://api.brevo.com/v3")
 
@@ -46,7 +47,6 @@
 (defn create-app-attribute-string
   "Transforms clojure map into a string value for the app specific attribute
    {A 1, B 2} -> A:1__B:2"
-
   [clj-map]
   (str/join "__" (mapv (fn [[k v]] (str k ":" v)) clj-map)))
 
@@ -57,62 +57,69 @@
 (defn get-brevo-id-by-email [api-key email]
   (let [endpoint (str brevo-api-prefix "/contacts/" (url-encode email))]
     #?(:cljs
-       (p/then
-        (axios-client/get {:endpoint endpoint
-                           :headers {:api-key api-key}})
-        (fn [result] (get-in (js->clj result :keywordize-keys true) [:data :id])))
+         (p/then
+           (axios-client/get
+             {:endpoint endpoint
+              :headers {:api-key api-key}})
+           (fn [result] (get-in (js->clj result :keywordize-keys true) [:data :id])))
        :clj
-       (->
-        (http/get endpoint
-                  {:headers {"api-key" api-key}
-                   :content-type :json})
-        :body
-        (json/read-value (json/object-mapper {:decode-key-fn true}))
-        :id))))
+         (->
+           (http/get
+             endpoint
+             {:headers {"api-key" api-key}
+              :content-type :json})
+           :body
+           (json/read-value (json/object-mapper {:decode-key-fn true}))
+           :id))))
 
-(defn create-or-update-contact!
-  "Returns the brevo ID of the newly created or updated contact."
+(defn create-or-update-contact! "Returns the brevo ID of the newly created or updated contact."
   [api-key email attributes-map add-to-lists]
-  (let [payload (cond-> {:email email
-                         :attributes attributes-map
-                         :updateEnabled true}
-                        (seq add-to-lists) (assoc :listIds add-to-lists))
+  (let [payload (cond->
+                  {:email email
+                   :attributes attributes-map
+                   :updateEnabled true}
+                  (seq add-to-lists) (assoc :listIds add-to-lists))
         endpoint (str brevo-api-prefix "/contacts")]
     #?(:cljs
-       (p/then
-        (axios-client/post {:endpoint endpoint
-                            :headers {:api-key api-key}
-                            :data payload})
-        (fn [result]
-          (or
-           (get-in (js->clj result :keywordize-keys true) [:data :id])
-           (get-brevo-id-by-email api-key email))))
+         (p/then
+           (axios-client/post
+             {:endpoint endpoint
+              :headers {:api-key api-key}
+              :data payload})
+           (fn [result]
+             (or (get-in (js->clj result :keywordize-keys true) [:data :id]) (get-brevo-id-by-email api-key email))))
        :clj
-       (or (->
-            (http/post endpoint
-                       {:headers {"api-key" api-key}
-                        :content-type :json
-                        :form-params payload})
-            :body
-            (json/read-value (json/object-mapper {:decode-key-fn true}))
-            :id)
+         (or
+           (->
+             (http/post
+               endpoint
+               {:headers {"api-key" api-key}
+                :content-type :json
+                :form-params payload})
+             :body
+             (json/read-value (json/object-mapper {:decode-key-fn true}))
+             :id)
            (get-brevo-id-by-email api-key email)))))
 
 (defn update-contact-by-id! [api-key id attributes-map]
   (let [endpoint (str brevo-api-prefix "/contacts/" id)
         payload {:attributes attributes-map}]
     #?(:cljs
-       (axios-client/put {:endpoint endpoint
-                          :headers {:api-key api-key}
-                          :data payload})
-
+         (axios-client/put
+           {:endpoint endpoint
+            :headers {:api-key api-key}
+            :data payload})
        :clj
-       (http/put endpoint
-                 {:headers {"api-key" api-key}
-                  :content-type :json
-                  :form-params payload}))))
+         (http/put
+           endpoint
+           {:headers {"api-key" api-key}
+            :content-type :json
+            :form-params payload}))))
 
 (defn ping [api-key]
   (let [endpoint (str brevo-api-prefix "/account")]
-    #?(:cljs (axios-client/get {:endpoint endpoint :headers {:api-key api-key}})
+    #?(:cljs
+         (axios-client/get
+           {:endpoint endpoint
+            :headers {:api-key api-key}})
        :clj (http/get endpoint {:headers {"api-key" api-key}}))))

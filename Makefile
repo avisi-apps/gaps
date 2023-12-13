@@ -11,3 +11,8 @@ lint:
 
 release:
 	clj -T:build generate-release-tag
+
+fmt:
+	for module in $(DIRS); do \
+		clj -A:lint:fix $$module; \
+	done

@@ -1,7 +1,6 @@
 (ns com.avisi-apps.gaps.rollbar.timbre)
 
-(defn ^:private set-context! [^js rollbar context]
-  (.configure ^js rollbar #js {:payload #js {:context context}}))
+(defn ^:private set-context! [^js rollbar context] (.configure ^js rollbar #js {:payload #js {:context context}}))
 
 (defn ^:private log! [^js rollbar level msg err ns]
   (case level
@@ -32,9 +31,7 @@
       :output-fn :inherit
       :ns-filter (or ns-filter #{"*"})
       :fn
-      (fn [{:keys [level msg_ ?ns-str ?err]}]
-        (when rollbar
-          (when context
-            (set-context! rollbar context))
-
-          (log! rollbar level (force msg_) (clj->js ?err) ?ns-str)))})))
+        (fn [{:keys [level msg_ ?ns-str ?err]}]
+          (when rollbar
+            (when context (set-context! rollbar context))
+            (log! rollbar level (force msg_) (clj->js ?err) ?ns-str)))})))
