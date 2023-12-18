@@ -54,9 +54,11 @@
   "Transforms string value into a clojure map for the app specific attribute
    A:1__B:2 -> {A 1, B 2}"
   [app-attribute]
-  (reduce (fn [attr key-val] (let [[k v] (str/split key-val #":")] (assoc attr k v)))
+  (if (str/blank? app-attribute)
     {}
-    (str/split app-attribute #"__")))
+    (reduce (fn [attr key-val] (let [[k v] (str/split key-val #":")] (assoc attr k v)))
+      {}
+      (str/split app-attribute #"__"))))
 
 (defn url-encode [s]
   #?(:clj (http-util/url-encode s)
