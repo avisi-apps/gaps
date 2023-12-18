@@ -100,31 +100,41 @@
            (json/read-value (json/object-mapper {:decode-key-fn true}))
            :email))))
 
-(defn get-contact-app-attribute-by-email "Returns the attributes for app-attribute as a map."
-  [api-key email app-attribute]
+(defn- get-contact-app-attribute
+  "Returns the attributes for app-attribute as a map."
+  [api-key endpoint app-attribute]
+  #?(:cljs
+       (p/then
+         (axios-client/get
+           {:endpoint endpoint
+            :headers {:api-key api-key}})
+         (fn [result]
+           (->
+             (js->clj result :keywordize-keys true)
+             (get-in [:data :attributes (keyword app-attribute)])
+             (read-app-attribute-string))))
+     :clj
+       (->
+         (http/get
+           endpoint
+           {:headers {"api-key" api-key}
+            :content-type :json})
+         :body
+         (json/read-value (json/object-mapper {:decode-key-fn true}))
+         :attributes
+         (keyword app-attribute)
+         (read-app-attribute-string))))
+
+(defn get-contact-app-attribute-by-id [api-key brevo-id app-attribute]
+  (if-not (str/blank? brevo-id)
+    (let [endpoint (str brevo-api-prefix "/contacts/" brevo-id)]
+      (get-contact-app-attribute api-key endpoint app-attribute))
+    {}))
+
+(defn get-contact-app-attribute-by-email [api-key email app-attribute]
   (if-not (str/blank? email)
     (let [endpoint (str brevo-api-prefix "/contacts/" (url-encode email))]
-      #?(:cljs
-           (p/then
-             (axios-client/get
-               {:endpoint endpoint
-                :headers {:api-key api-key}})
-             (fn [result]
-               (->
-                 (js->clj result :keywordize-keys true)
-                 (get-in [:data :attributes (keyword app-attribute)])
-                 (read-app-attribute-string))))
-         :clj
-           (->
-             (http/get
-               endpoint
-               {:headers {"api-key" api-key}
-                :content-type :json})
-             :body
-             (json/read-value (json/object-mapper {:decode-key-fn true}))
-             :attributes
-             (keyword app-attribute)
-             (read-app-attribute-string))))
+      (get-contact-app-attribute api-key endpoint app-attribute))
     {}))
 
 (defn create-or-update-contact! "Returns the brevo ID of the newly created or updated contact."
