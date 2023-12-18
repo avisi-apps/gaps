@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
-
+- Add function to Brevo module that retrieves a contact's app attributes for email or brevo-id
 ### Changed
 
 ### Fixed
