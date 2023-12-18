@@ -32,3 +32,6 @@ for Google Cloud functions or Google Cloud run with minimal differences.
 
 ## [rollbar](modules/rollbar/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/rollbar.svg)](https://clojars.org/com.avisi-apps.gaps/rollbar)
 Library to use Rollbar within a clojurescript Fulcro project. This makes it possible to log React and Fulcro errors.
+
+## [brevo](modules/brevo/README.md) [![Clojars Project](https://img.shields.io/clojars/v/com.avisi-apps.gaps/brevo.svg)](https://clojars.org/com.avisi-apps.gaps/brevo)
+Module that contains a handful of helper functions and variabled to manage Brevo emails and contacts.

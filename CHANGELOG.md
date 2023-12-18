@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- Add README for Brevo module and include it in the top-level README
+- Add function to Brevo module that returns an app attribute string as a map
+- Add function to Brevo module that retrieves a contact's email address by their Brevo contact id
+- Add function to Brevo module that retrieves a contact's app attributes
 
 ### Changed
 
