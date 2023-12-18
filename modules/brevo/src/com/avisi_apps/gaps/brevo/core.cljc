@@ -50,6 +50,14 @@
   [clj-map]
   (str/join "__" (mapv (fn [[k v]] (str k ":" v)) clj-map)))
 
+(defn read-app-attribute-string
+  "Transforms string value into a clojure map for the app specific attribute
+   A:1__B:2 -> {A 1, B 2}"
+  [app-attribute]
+  (reduce (fn [attr key-val] (let [[k v] (str/split key-val #":")] (assoc attr k v)))
+    {}
+    (str/split app-attribute #"__")))
+
 (defn url-encode [s]
   #?(:clj (http-util/url-encode s)
      :cljs (gstring/urlEncode s)))
@@ -71,6 +79,51 @@
            :body
            (json/read-value (json/object-mapper {:decode-key-fn true}))
            :id))))
+
+(defn get-email-by-brevo-id [api-key brevo-id]
+  (let [endpoint (str brevo-api-prefix "/contacts/" brevo-id)]
+    #?(:cljs
+         (p/then
+           (axios-client/get
+             {:endpoint endpoint
+              :headers {:api-key api-key}})
+           (fn [result] (get-in (js->clj result :keywordize-keys true) [:data :email])))
+       :clj
+         (->
+           (http/get
+             endpoint
+             {:headers {"api-key" api-key}
+              :content-type :json})
+           :body
+           (json/read-value (json/object-mapper {:decode-key-fn true}))
+           :email))))
+
+(defn get-contact-app-attribute-by-email "Returns the attributes for app-attribute as a map."
+  [api-key email app-attribute]
+  (if-not (str/blank? email)
+    (let [endpoint (str brevo-api-prefix "/contacts/" (url-encode email))]
+      #?(:cljs
+           (p/then
+             (axios-client/get
+               {:endpoint endpoint
+                :headers {:api-key api-key}})
+             (fn [result]
+               (->
+                 (js->clj result :keywordize-keys true)
+                 (get-in [:data :attributes (keyword app-attribute)])
+                 (read-app-attribute-string))))
+         :clj
+           (->
+             (http/get
+               endpoint
+               {:headers {"api-key" api-key}
+                :content-type :json})
+             :body
+             (json/read-value (json/object-mapper {:decode-key-fn true}))
+             :attributes
+             (keyword app-attribute)
+             (read-app-attribute-string))))
+    {}))
 
 (defn create-or-update-contact! "Returns the brevo ID of the newly created or updated contact."
   [api-key email attributes-map add-to-lists]
