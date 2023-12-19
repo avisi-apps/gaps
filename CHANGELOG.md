@@ -10,6 +10,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+## [v0.0.100]
+### Added
+
+### Changed
+
+### Fixed
+
 ## [v0.0.97]
 ### Added
 - Add function to Brevo module that retrieves a contact's app attributes for email or brevo-id
@@ -147,7 +154,8 @@ Broken release. Do not use.
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.97...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.100...HEAD
+[0.0.100]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.100
 [0.0.97]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.97
 [0.0.94]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.94
 [0.0.89]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.89
