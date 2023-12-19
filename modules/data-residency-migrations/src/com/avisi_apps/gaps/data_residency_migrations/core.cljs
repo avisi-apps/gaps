@@ -46,8 +46,7 @@
               destination-project (str/join "-" [app-name stage destination-region-label])]
           (pubsub/publish-message!
             migrations-topic
-            {:phase phase
-             :migration
+            {:attributes
                {:tenant tenant
                 :source_project source-project
                 :destination_project destination-project}}))
