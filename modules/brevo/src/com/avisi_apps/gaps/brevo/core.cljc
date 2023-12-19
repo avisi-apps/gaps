@@ -1,6 +1,7 @@
 (ns com.avisi-apps.gaps.brevo.core
   (:require
     [clojure.string :as str]
+    [com.avisi-apps.gaps.log :as log]
     #?(:clj [clj-http.client :as http])
     #?(:clj [jsonista.core :as json])
     #?(:clj [clj-http.util :as http-util])
@@ -43,6 +44,9 @@
 (def status-other "OTHER")
 
 (def monday-monetization-enabled-field "MONDAY_MONETIZATION_ENABLED")
+
+; Exceptions
+(def document-not-found-code "document_not_found")
 
 (defn create-app-attribute-string
   "Transforms clojure map into a string value for the app specific attribute
@@ -104,26 +108,41 @@
   "Returns the attributes for app-attribute as a map."
   [api-key endpoint app-attribute]
   #?(:cljs
-       (p/then
-         (axios-client/get
-           {:endpoint endpoint
-            :headers {:api-key api-key}})
-         (fn [result]
-           (->
-             (js->clj result :keywordize-keys true)
-             (get-in [:data :attributes (keyword app-attribute)])
-             (read-app-attribute-string))))
-     :clj
        (->
-         (http/get
-           endpoint
-           {:headers {"api-key" api-key}
-            :content-type :json})
-         :body
-         (json/read-value (json/object-mapper {:decode-key-fn true}))
-         :attributes
-         (keyword app-attribute)
-         (read-app-attribute-string))))
+         (p/then
+           (axios-client/get
+             {:endpoint endpoint
+              :headers {:api-key api-key}})
+           (fn [result]
+             (->
+               (js->clj result :keywordize-keys true)
+               (get-in [:data :attributes (keyword app-attribute)])
+               (read-app-attribute-string))))
+         (p/catch
+           (fn [e]
+             (let [code (->
+                          (ex-data e)
+                          (js->clj :keywordize-keys true)
+                          (get-in [:response-data "code"]))]
+               (if (= code document-not-found-code) (log/warn {:message "Contact could not be found"}) (throw e))))))
+     :clj
+       (try
+         (->
+           (http/get
+             endpoint
+             {:headers {"api-key" api-key}
+              :content-type :json})
+           :body
+           (json/read-value (json/object-mapper {:decode-key-fn true}))
+           :attributes
+           (keyword app-attribute)
+           (read-app-attribute-string))
+         (catch Exception e
+           (let [code (->
+                        (ex-data e)
+                        (json/read-value (json/object-mapper {:decode-key-fn true}))
+                        (get-in [:response-data "code"]))]
+             (if (= code document-not-found-code) (log/warn {:message "Contact could not be found"}) (throw e)))))))
 
 (defn get-contact-app-attribute-by-id [api-key brevo-id app-attribute]
   (if-not (str/blank? brevo-id)
