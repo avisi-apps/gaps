@@ -33,11 +33,9 @@
 
 (defn ^:private handle-migration-event [{:keys [installation migration-data tenant-ref]}]
   (let [tenant (:clientKey installation)
-        phase (:phase migration-data)]
+        {:keys [phase start-time end-time]} migration-data]
     (condp contains? (:phase migration-data)
-      ; for now we don't perform any actions in the schedule phase
-      #{"schedule"} nil
-      #{"start"}
+      #{"schedule"}
         (let [source-project (get-project-id)
               [app-name stage _] (->
                                    source-project
@@ -49,8 +47,10 @@
             {:attributes
                {:tenant tenant
                 :source_project source-project
-                :destination_project destination-project}}))
-      #{"commit" "rollback"}
+                :destination_project destination-project
+                :start_time start-time
+                :end_time end-time}}))
+      #{"start" "commit" "rollback"}
         (p/let [token (->
                         ^js (GoogleAuth.)
                         (.getAccessToken))
