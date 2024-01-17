@@ -29,13 +29,7 @@
       {:status 500
        :body "Unexpected error"})))
 
-; for now migration leaders are hardcoded to be in the us region
-(defn ^:private project-id->migrations-topic [project-id]
-  (let [[app-name environment _] (->
-                                   project-id
-                                   (str/split #"-"))
-        leader-project (str/join "-" [app-name environment "us"])]
-    (str "projects/" leader-project "/topics/dare-migrations")))
+(def ^:private migrations-topic "dare-migrations")
 
 (defn ^:private handle-migration-event [{:keys [installation migration-data tenant-ref]}]
   (let [tenant (:clientKey installation)
@@ -43,13 +37,13 @@
     (condp contains? (:phase migration-data)
       #{"schedule"}
         (let [source-project (get-project-id)
-              [app-name environment _] (->
-                                         source-project
-                                         (str/split #"-"))
+              [app-name stage _] (->
+                                   source-project
+                                   (str/split #"-"))
               destination-region-label (str/lower-case (:location migration-data))
-              destination-project (str/join "-" [app-name environment destination-region-label])]
+              destination-project (str/join "-" [app-name stage destination-region-label])]
           (pubsub/publish-message!
-            (project-id->migrations-topic source-project)
+            migrations-topic
             {:attributes
                {:tenant tenant
                 :source_project source-project
