@@ -32,20 +32,24 @@
 (def ^:private migrations-topic "dare-migrations")
 
 (defn ^:private handle-migration-event [{:keys [installation migration-data tenant-ref]}]
-  (let [tenant (:clientKey installation)
-        {:keys [phase start-time end-time]} migration-data]
-    (condp contains? (:phase migration-data)
+  (let [{tenant :clientKey
+         base-url :baseUrl}
+          installation
+        {:keys [phase start-time end-time location]} migration-data]
+    (condp contains? phase
       #{"schedule"}
         (let [source-project (get-project-id)
               [app-name stage _] (->
                                    source-project
                                    (str/split #"-"))
-              destination-region-label (str/lower-case (:location migration-data))
+              destination-region-label (str/lower-case location)
               destination-project (str/join "-" [app-name stage destination-region-label])]
           (pubsub/publish-message!
             migrations-topic
             {:attributes
                {:tenant tenant
+                :base_url base-url
+                :phase phase
                 :source_project source-project
                 :destination_project destination-project
                 :start_time start-time
