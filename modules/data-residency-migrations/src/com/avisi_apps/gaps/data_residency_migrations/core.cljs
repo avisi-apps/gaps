@@ -39,19 +39,20 @@
     (condp contains? phase
       #{"schedule"}
         (let [source-project (get-project-id)
-              [app-name stage _] (->
-                                   source-project
-                                   (str/split #"-"))
-              destination-region-label (str/lower-case location)
-              destination-project (str/join "-" [app-name stage destination-region-label])]
+              [app-name development-stage source-region] (->
+                                                           source-project
+                                                           (str/split #"-"))
+              destination-region (str/lower-case location)]
           (pubsub/publish-message!
             migrations-topic
             {:attributes
                {:tenant tenant
                 :base_url base-url
                 :phase phase
-                :source_project source-project
-                :destination_project destination-project
+                :app_name app-name
+                :development_stage development-stage
+                :source_region source-region
+                :destination_region destination-region
                 :start_time start-time
                 :end_time end-time}}))
       #{"start" "commit" "rollback"}
