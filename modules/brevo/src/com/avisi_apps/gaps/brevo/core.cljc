@@ -1,7 +1,7 @@
 (ns com.avisi-apps.gaps.brevo.core
   (:require
     [clojure.string :as str]
-    [com.avisi-apps.gaps.log :as log]
+    #?(:cljs [com.avisi-apps.gaps.log :as log])
     #?(:clj [clj-http.client :as http])
     #?(:clj [jsonista.core :as json])
     #?(:clj [clj-http.util :as http-util])
@@ -143,7 +143,8 @@
                         (ex-data e)
                         (json/read-value (json/object-mapper {:decode-key-fn true}))
                         (get-in [:response-data "code"]))]
-             (if (= code document-not-found-code) (log/warn {:message "Contact could not be found"}) (throw e)))))))
+             (when-not (= code document-not-found-code)
+               (throw e)))))))
 
 (defn get-contact-app-attribute-by-id [api-key brevo-id app-attribute]
   (if-not (str/blank? brevo-id)
