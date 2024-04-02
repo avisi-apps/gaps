@@ -31,7 +31,8 @@
 
 ; monday.com app specific attributes that store installation info
 (def tracket-attribute "MONDAY__TRACKET")
-(def git-for-monday-attribute "MONDAY__GITFORMONDAY")
+(def gitlab-for-monday-attribute "MONDAY__GITLABFORMONDAY")
+(def github-for-monday-attribute "MONDAY__GITHUBFORMONDAY")
 
 (def license-type-field "LICENSETYPE")
 (def license-type-paid "PAID")
