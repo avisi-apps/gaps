@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 ### Fixed
+
+## [v0.0.129]
+### Added
+
+### Changed
+
+### Fixed
 - Fixed typo in logging module
 
 ## [v0.0.126]
@@ -212,7 +219,8 @@ Broken release. Do not use.
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.126...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.129...HEAD
+[0.0.129]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.129
 [0.0.126]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.126
 [0.0.123]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.123
 [0.0.120]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.120
