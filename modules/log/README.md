@@ -2,14 +2,8 @@
 
 Google cloud logging compatible structured logging.
 
-# Usage
-This project uses pino (used to be bunyan but that is unmaintained) for it's logging make sure you added that to your dependencies by running:
-
-```shell
-yarn add --exact pino
-```
-
 See the below example for usage examples:
+
 ```clojure
 (ns example
   ;; First make sure you add this require
@@ -36,14 +30,28 @@ See the below example for usage examples:
 ```
 
 ## Pro tip
-If you want to make the output of logging more readable you can use `pino-pretty`. You can enable this by adding it as
+
+There are two preloads which you can use in `shadow-cljs`. You can enable this by adding it as
 a preload in your shadow-cljs.edn
 
-```shell
+For backend services use:
+
+```clojure
 {:devtools {:preloads [com.avisi-apps.gaps.log.preload]}}
 ```
 
-Make sure to save the pino-pretty module as a dev dependency:
+For client-side builds use:
+
+```clojure
+{:devtools {:preloads [com.avisi-apps.gaps.log.preload-browser]}}
 ```
-yarn add --dev --exact pino-pretty
+
+### Production elision of debug calls
+
+To remove debug calls from release calls make sure the add the following alias
+to your `deps.edn`. This alias should be enabled on most CI configs within
+Avisi.
+
+```clojure
+:ci {:jvm-opts ["-Dtaoensso.telemere.ct-min-level=:info" "-Dtaoensso.timbre.min-level.edn=:warn"]}
 ```

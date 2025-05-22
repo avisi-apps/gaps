@@ -3,7 +3,8 @@
         com.avisi-apps.gaps/reitit-express {:local/root "../../modules/reitit-express"}
 
         ;; Used to avoid a very annoying compile warning
-        com.taoensso/encore {:mvn/version "3.21.0"}
+        com.taoensso/encore {:mvn/version "3.145.0"}
+        com.taoensso/timbre {:mvn/version "6.7.0"}
         io.aviso/pretty {:mvn/version "1.1.1"}
         com.fulcrologic/fulcro {:mvn/version "3.5.24"}
 
