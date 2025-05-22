@@ -1,16 +1,10 @@
 (ns com.avisi-apps.gaps.log.preload
   (:require
-    ["pino-pretty"]
+    [taoensso.telemere :as t]
     [com.avisi-apps.gaps.log :as log]))
 
-(log/update-log-config!
-  (fn [current-config]
-    (assoc current-config
-      :transport
-        {:target "pino-pretty"
-         :options
-           {:sync true
-            :messageKey "message"
-            :colorize true}})))
+(t/set-min-level! :debug)
 
-(log/warn {:message "Enabled pino-pretty logger make sure this doesn't happen in production!"})
+(log/warn
+  {:message "Set min level to debug - Make sure this does not happen in production!"
+   :level :debug})

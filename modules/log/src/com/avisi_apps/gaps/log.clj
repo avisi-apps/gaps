@@ -1,29 +1,22 @@
-(ns com.avisi-apps.gaps.log)
+(ns com.avisi-apps.gaps.log
+  (:require
+    [taoensso.telemere :as t]))
 
-(defn- log-expr
-  [level data m]
-  `(log
-     ~{:level level
-       :line (:line m)
-       :file (:file m)
-       :ns (str *ns*)
-       :data data}))
+(defn create-log-statement [level data]
+  `(taoensso.telemere/log!
+     {:level ~level
+      :data (dissoc ~data :message)}
+     (:message ~data)))
 
-(defmacro debug [data] (log-expr :debug data (meta &form)))
+(defmacro debug [data] (create-log-statement :debug data))
+(defmacro info [data] (create-log-statement :info data))
+(defmacro warn [data] (create-log-statement :warn data))
+(defmacro error
+  [error data]
+  `(taoensso.telemere/log!
+     {:level :error
+      :error ~error
+      :data (merge (dissoc ~data :message :error) com.avisi.apps.gaps.log)}
+     (:message ~data)))
 
-(defmacro info [data] (log-expr :info data (meta &form)))
-
-(defmacro warn [data] (log-expr :warn data (meta &form)))
-
-(defmacro error [error data] (log-expr :error `(assoc ~data :error ~error) (meta &form)))
-
-(defmacro spy
-  [form]
-  (let [res (gensym)]
-    `(let [~res ~form]
-       ~(log-expr
-          :debug
-          `{:spy ~(str form)
-            :=> (str ~res)}
-          (meta &form))
-       ~res)))
+(defmacro spy [body] `(taoensso.telemere/spy! :debug ~body))

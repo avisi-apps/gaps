@@ -7,7 +7,8 @@
                 :js-options {:resolve {"dtrace-provider" {:target :global
                                                           :global "dtrace-provider"}}}
                 :devtools {:after-load com.avisi-apps.cloud-run-example.client/refresh
-                           :preloads [com.fulcrologic.fulcro.inspect.preload
+                           :preloads [com.avisi-apps.gaps.log.preload-browser
+                                      com.fulcrologic.fulcro.inspect.preload
                                       com.fulcrologic.fulcro.inspect.dom-picker-preload]}
                 :modules {:main {:init-fn com.avisi-apps.cloud-run-example.client/init
                                  :entries [com.avisi-apps.cloud-run-example.client]}}}

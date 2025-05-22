@@ -14,7 +14,6 @@
     "lru": "3.1.0",
     "multiparty": "4.2.3",
     "negotiator": "0.6.3",
-    "pino": "8.5.0",
     "qs": "6.11.0",
     "random-bytes": "1.0.0",
     "shadow-cljs": "2.19.8",
@@ -24,7 +23,6 @@
     "xregexp": "5.1.1"
   },
   "devDependencies": {
-    "pino-pretty": "10.0.0",
     "source-map-support": "0.5.21"
   }
 }
