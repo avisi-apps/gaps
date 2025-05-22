@@ -16,7 +16,7 @@
   `(taoensso.telemere/log!
      {:level :error
       :error ~error
-      :data (merge (dissoc ~data :message :error) com.avisi.apps.gaps.log)}
+      :data (merge (dissoc ~data :message :error))}
      (:message ~data)))
 
 (defmacro spy [body] `(taoensso.telemere/spy! :debug ~body))
