@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 ### Changed
+
+### Fixed
+
+## [v0.0.126]
+### Added
+
+### Changed
 - Changed logging library from pino to telemere
 
 ### Fixed
@@ -204,7 +211,8 @@ Broken release. Do not use.
 - Added rcf dev library `com.avisi-apps.gaps/log`
 - Added build script to build or release all projects
 
-[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.123...HEAD
+[Unreleased]: https://github.com/avisi-apps/gaps/compare/v0.0.126...HEAD
+[0.0.126]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.126
 [0.0.123]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.123
 [0.0.120]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.120
 [0.0.117]: https://github.com/avisi-apps/gaps/releases/tag/v0.0.117
