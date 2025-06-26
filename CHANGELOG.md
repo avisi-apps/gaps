@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 ### Fixed
+Fix content negoation to handle content-types better. #68
 
 ## [v0.0.129]
 ### Added

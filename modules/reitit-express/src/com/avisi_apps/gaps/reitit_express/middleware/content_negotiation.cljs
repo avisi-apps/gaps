@@ -10,11 +10,14 @@
 (defn extract-accept-header-ring "Extract accept header from ring request" [request] (get (:headers request) "accept"))
 
 (defn accept-header->media-type [accept-header supported-media-types]
-  (.mediaType ^js (negotiator/Negotiator #js {:headers #js {:accept accept-header}}) (clj->js supported-media-types)))
+  (let [media-type (.mediaType ^js (negotiator/Negotiator #js {:headers #js {:accept accept-header}}))]
+    (if (= media-type "*/*") (first supported-media-types) (get (set supported-media-types) media-type))))
 
 (tests
   "Basic application/json test"
     (accept-header->media-type "application/json" ["application/json" "application/transit+json"])
+  "Basic application/json test with utf-8 encoding"
+    (accept-header->media-type "application/json; charset=utf-8" ["application/json" "application/transit+json"])
   := "application/json"
   "Accept any */*" (accept-header->media-type "*/*" ["application/json" "application/transit+json"])
   := "application/json"
