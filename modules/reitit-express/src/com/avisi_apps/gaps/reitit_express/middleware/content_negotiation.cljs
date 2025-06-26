@@ -9,25 +9,25 @@
 
 (defn extract-accept-header-ring "Extract accept header from ring request" [request] (get (:headers request) "accept"))
 
-(defn accept-header->media-type [accept-header supported-media-types]
+(defn content-type-str->media-type [accept-header supported-media-types]
   (let [media-type (.mediaType ^js (negotiator/Negotiator #js {:headers #js {:accept accept-header}}))]
     (if (= media-type "*/*") (first supported-media-types) (get (set supported-media-types) media-type))))
 
 (tests
   "Basic application/json test"
-    (accept-header->media-type "application/json" ["application/json" "application/transit+json"])
+    (content-type-str->media-type "application/json" ["application/json" "application/transit+json"])
   "Basic application/json test with utf-8 encoding"
-    (accept-header->media-type "application/json; charset=utf-8" ["application/json" "application/transit+json"])
+    (content-type-str->media-type "application/json; charset=utf-8" ["application/json" "application/transit+json"])
   := "application/json"
-  "Accept any */*" (accept-header->media-type "*/*" ["application/json" "application/transit+json"])
+  "Accept any */*" (content-type-str->media-type "*/*" ["application/json" "application/transit+json"])
   := "application/json"
   "Respects q-factor weighting"
-    (accept-header->media-type
+    (content-type-str->media-type
       "application/*;q=0.8, application/transit+json;q=0.9"
       ["application/json" "application/transit+json"])
   := "application/transit+json"
   "Returns nil when nothing matches"
-    (accept-header->media-type "application/html" ["application/json" "application/transit+json"])
+    (content-type-str->media-type "application/html" ["application/json" "application/transit+json"])
   := nil)
 
 (defn extract-content-type-ring "Extracts content-type from ring-request."
@@ -48,10 +48,13 @@
 
 (defn negotiate-request [request formats]
   (let [{:keys [body]} request
-        content-type (extract-content-type-ring request)]
+        content-type (->
+                       (extract-content-type-ring request)
+                       (content-type-str->media-type (keys formats)))]
     (cond-> request
       (and body content-type (contains? formats content-type))
-        (assoc :form-params (format-request body content-type formats)))))
+        (assoc (if (= content-type "application/x-www-form-urlencoded") :form-params :body-params)
+          (format-request body content-type formats)))))
 
 (tests
   "Should handle transit"
@@ -60,7 +63,7 @@
         {:headers {"content-type" "application/transit+json"}
          :body "[[\"^ \",\"~:id\",1],[\"^ \",\"^0\",2],[\"^ \",\"^0\",3]]"}
         default-formats)
-      :form-params)
+      :body-params)
   := [{:id 1} {:id 2}
       {:id 3}]
   "Should handle json"
@@ -69,7 +72,7 @@
         {:headers {"content-type" "application/json"}
          :body (->js [{:id 1} {:id 2} {:id 3}])}
         default-formats)
-      :form-params)
+      :body-params)
   := [{:id 1} {:id 2}
       {:id 3}])
 
@@ -81,7 +84,7 @@
   (if (or (map? body) (sequential? body))
     (let [media-type (->
                        (extract-accept-header-ring request)
-                       (accept-header->media-type (keys formats)))
+                       (content-type-str->media-type (keys formats)))
           {:keys [encoder]
            :as format}
             (get formats media-type default-format)]
