@@ -87,7 +87,7 @@
                        (content-type-str->media-type (keys formats)))
           {:keys [encoder]
            :as format}
-            (get formats media-type default-format)]
+            (get formats (or media-type default-format))]
       (->
         response
         (update :body #(core/encode (apply (first encoder) (rest encoder)) %))
