@@ -27,7 +27,7 @@
 (def mcf-serverdc-attribute "ATLASSIAN__SERVERDC__MCF")
 (def uda-serverdc-attribute "ATLASSIAN__SERVERDC__UDA")
 (def ut-serverdc-attribute "ATLASSIAN__SERVERDC__UT")
-
+(def frank-cloud-attribute "ATLASSIAN__CLOUD__FRANK")
 
 ; monday.com app specific attributes that store installation info
 (def tracket-attribute "MONDAY__TRACKET")
